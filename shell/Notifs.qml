@@ -125,6 +125,11 @@ Singleton {
         imageSupported: true
 
         onNotification: n => {
+            // Volume/brightness/mute feedback from the old hypr scripts: the OSD
+            // already shows these, so don't keep or pop them.
+            const h = n.hints || {};
+            if (n.transient && (h["x-canonical-private-synchronous"] !== undefined || h["SWAYNC_BYPASS_DND"] !== undefined))
+                return;
             n.tracked = true;
             root.times = Object.assign({}, root.times, { [n.id]: Date.now() });
             if (!root.dnd && !root.panelOpen)

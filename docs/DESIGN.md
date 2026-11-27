@@ -21,10 +21,9 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 - **Giữa:** đồng hồ có giây (`HH:mm:ss`); khi có nhạc thì thêm sóng âm và tên bài; rê chuột vào thì hiện ngày.
 - **Phải:** tray (chuột trái kích hoạt, chuột phải mở menu), mạng, âm lượng, pin, nút sáng/tối (☀/☾: đổi tay, giữ đến khi night light đổi lại), nút ⏻ mở power menu.
 - **Thông báo (Prism tự làm, thay swaync):** bảng kính thả xuống dưới chuông, gộp theo app (bấm mũi tên để mở nhóm), nút hành động của thông báo, bấm vào thông báo để mở app, Clear all, Không làm phiền. Popup thông báo mới hiện dưới chuông ~5 giây (giữ chuột thì không tự ẩn; Critical thì ở lại).
-- **Sự kiện** (trước đây do island nở ra), dự kiến:
-  - Âm lượng/độ sáng và thông báo ngắn: popup kính nhỏ ngay dưới giữa bar
-  - Họp: chấm mic/camera và "đang chia sẻ" nằm ở cụm phải của bar
-- **Fullscreen / game:** bar ẩn, popup sự kiện vẫn hiện.
+- **OSD:** âm lượng, độ sáng, bật/tắt mic hiện thành viên kính dưới giữa bar trên màn đang focus (~1.4s). Thông báo âm lượng/độ sáng của script cũ bị lọc bỏ.
+- **Họp (cụm phải):** viên cam hiện khi mic / camera / chia sẻ màn hình đang dùng. Bấm mic để tắt/bật mic, bấm "Sharing" để dừng chia sẻ. Bỏ qua các luồng chỉ nghe loa (cava, EasyEffects).
+- **Fullscreen / game:** bar trượt lên và ẩn trên màn đó; OSD và popup vẫn hiện.
 
 ## 3. Control center
 
@@ -74,8 +73,8 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 ## 8. Lộ trình
 
-1. Repo `~/.config/prism` (git). Bar cho 3 màn trên 0.56, chạy song song waybar.
-2. Popup sự kiện (OSD, thông báo), chỉ báo họp, ẩn khi fullscreen.
+1. ✅ Repo `~/.config/prism` (git). Bar cho 3 màn trên 0.56, chạy song song waybar.
+2. ✅ OSD, chỉ báo họp, ẩn khi fullscreen, thông báo riêng (27/11).
 3. Control center (thả xuống từ bar) + hệ màu wallust + sáng/tối theo night light.
 4. Wallpaper: bộ ảnh, đổi hằng tuần theo từng màn.
 5. hyprlock + hypridle.

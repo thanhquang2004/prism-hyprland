@@ -43,6 +43,17 @@ Singleton {
     readonly property string close: "\u{F0156}"
     readonly property string chevronDown: "\u{F0140}"
 
+    // OSD and privacy
+    readonly property string volHigh: "\u{F057E}"
+    readonly property string volMid: "\u{F0580}"
+    readonly property string volLow: "\u{F057F}"
+    readonly property string volMute: "\u{F075F}"
+    readonly property string mic: "\u{F036C}"
+    readonly property string micOff: "\u{F036D}"
+    readonly property string camera: "\u{F05A0}"
+    readonly property string share: "\u{F0118}"
+    readonly property string brightness: "\u{F00E0}"
+
     // Theme
     readonly property string sun: "\u{F0599}"
     readonly property string moon: "\u{F0594}"

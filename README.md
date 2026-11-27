@@ -11,6 +11,8 @@ hyprctl keyword layerrule "match:namespace prism-bar, ignore_alpha 0.1"
 hyprctl keyword layerrule "match:namespace prism-power, blur on"
 hyprctl keyword layerrule "match:namespace prism-notifs, blur on"
 hyprctl keyword layerrule "match:namespace prism-notifs, ignore_alpha 0.1"
+hyprctl keyword layerrule "match:namespace prism-osd, blur on"
+hyprctl keyword layerrule "match:namespace prism-osd, ignore_alpha 0.1"
 quickshell -p ~/.config/prism/shell
 ```
 
@@ -22,4 +24,6 @@ quickshell -p ~/.config/prism/shell
   - `bar/`: the bar and its modules
   - `notifs/`: notification daemon UI: panel (grouped by app) and popups. Prism owns `org.freedesktop.Notifications`; swaync D-Bus auto-start is disabled by overrides in `~/.local/share/dbus-1/services/` (delete them to bring swaync back)
   - `power/`: fullscreen power menu (`quickshell ipc -p ~/.config/prism/shell call power toggle`)
+  - `osd/`: volume / mic / brightness OSD (`Osd.qml` listens to PipeWire and kernel backlight uevents)
+  - `Privacy.qml` + `bar/PrivacyIndicator.qml`: mic / camera / screen-share indicator
   - `Icons.qml`: monochrome icon set

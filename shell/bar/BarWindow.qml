@@ -16,25 +16,28 @@ PanelWindow {
     // "portrait": narrow, essentials only; "laptop": 16:10; "wide": 16:9 and wider
     readonly property string formFactor: portrait ? "portrait" : (aspect < 1.7 ? "laptop" : "wide")
     readonly property var monitor: Hyprland.monitorFor(screen)
+    // Slide away while this monitor shows a fullscreen window (videos, games)
+    readonly property bool hidden: monitor?.activeWorkspace?.hasFullscreen ?? false
 
     anchors { top: true; left: true; right: true }
     implicitHeight: Theme.barGap + Theme.barHeight
-    exclusiveZone: implicitHeight
+    exclusiveZone: hidden ? 0 : implicitHeight
     color: "transparent"
 
     WlrLayershell.namespace: "prism-bar"
     WlrLayershell.layer: WlrLayer.Top
 
-    mask: Region { item: bar }
+    mask: Region { item: win.hidden ? null : bar }
 
     Rectangle {
         id: bar
-        anchors {
-            fill: parent
-            topMargin: Theme.barGap
-            leftMargin: Theme.barGap + 2
-            rightMargin: Theme.barGap + 2
-        }
+        x: Theme.barGap + 2
+        width: parent.width - 2 * x
+        height: Theme.barHeight
+        y: win.hidden ? -height - 4 : Theme.barGap
+        opacity: win.hidden ? 0 : 1
+        Behavior on y { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
+        Behavior on opacity { NumberAnimation { duration: Theme.animMed } }
         radius: Theme.radius
         color: Theme.glass
         border.width: 1
@@ -64,6 +67,9 @@ PanelWindow {
             anchors { right: parent.right; rightMargin: 12; verticalCenter: parent.verticalCenter }
             spacing: 14
 
+            PrivacyIndicator {
+                anchors.verticalCenter: parent.verticalCenter
+            }
             Tray {
                 anchors.verticalCenter: parent.verticalCenter
                 window: win
