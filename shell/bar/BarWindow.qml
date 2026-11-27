@@ -64,6 +64,9 @@ PanelWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 compact: win.formFactor === "portrait"
             }
+            NotifButton {
+                anchors.verticalCenter: parent.verticalCenter
+            }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
                 text: Icons.shutdown

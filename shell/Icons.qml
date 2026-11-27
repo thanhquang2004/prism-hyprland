@@ -36,6 +36,11 @@ Singleton {
         return fallback;
     }
 
+    // Notifications
+    readonly property string bell: "\u{F009A}"
+    readonly property string bellNone: "\u{F009C}"
+    readonly property string bellOff: "\u{F009B}"
+
     // Power menu
     readonly property string lock: "\u{F033E}"
     readonly property string logout: "\u{F0343}"
