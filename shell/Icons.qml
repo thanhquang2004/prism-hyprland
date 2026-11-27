@@ -40,6 +40,9 @@ Singleton {
     readonly property string bell: "\u{F009A}"
     readonly property string bellNone: "\u{F009C}"
     readonly property string bellOff: "\u{F009B}"
+    readonly property string close: "\u{F0156}"
+    readonly property string chevronDown: "\u{F0140}"
+    readonly property string chevronUp: "\u{F0143}"
 
     // Power menu
     readonly property string lock: "\u{F033E}"

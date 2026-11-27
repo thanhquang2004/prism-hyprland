@@ -9,6 +9,8 @@ Design brief: see `docs/DESIGN.md`.
 hyprctl keyword layerrule "match:namespace prism-bar, blur on"
 hyprctl keyword layerrule "match:namespace prism-bar, ignore_alpha 0.1"
 hyprctl keyword layerrule "match:namespace prism-power, blur on"
+hyprctl keyword layerrule "match:namespace prism-notifs, blur on"
+hyprctl keyword layerrule "match:namespace prism-notifs, ignore_alpha 0.1"
 quickshell -p ~/.config/prism/shell
 ```
 
@@ -18,5 +20,6 @@ quickshell -p ~/.config/prism/shell
   - `shell.qml`: entry point, one floating bar per screen
   - `Theme.qml`: design tokens (colors, type, motion)
   - `bar/`: the bar and its modules
+  - `notifs/`: notification daemon UI: panel (grouped by app) and popups. Prism owns `org.freedesktop.Notifications`; swaync D-Bus auto-start is disabled by overrides in `~/.local/share/dbus-1/services/` (delete them to bring swaync back)
   - `power/`: fullscreen power menu (`quickshell ipc -p ~/.config/prism/shell call power toggle`)
   - `Icons.qml`: monochrome icon set

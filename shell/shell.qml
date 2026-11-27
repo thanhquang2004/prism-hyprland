@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import "bar"
+import "notifs"
 import "power"
 
 // Prism: one floating bar per screen. Each bar reads its own screen's
@@ -15,5 +16,7 @@ ShellRoot {
         }
     }
 
+    NotifCenter {}
+    NotifPopups {}
     PowerMenu {}
 }

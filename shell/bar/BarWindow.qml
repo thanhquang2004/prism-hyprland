@@ -40,10 +40,19 @@ PanelWindow {
         border.width: 1
         border.color: Theme.edge
 
-        Workspaces {
+        Row {
             anchors { left: parent.left; leftMargin: 6; verticalCenter: parent.verticalCenter }
-            monitor: win.monitor
-            compact: win.formFactor === "portrait"
+            spacing: 4
+
+            NotifButton {
+                anchors.verticalCenter: parent.verticalCenter
+                screen: win.screen
+            }
+            Workspaces {
+                anchors.verticalCenter: parent.verticalCenter
+                monitor: win.monitor
+                compact: win.formFactor === "portrait"
+            }
         }
 
         Clock {
@@ -63,9 +72,6 @@ PanelWindow {
             Status {
                 anchors.verticalCenter: parent.verticalCenter
                 compact: win.formFactor === "portrait"
-            }
-            NotifButton {
-                anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
