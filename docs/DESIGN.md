@@ -56,11 +56,11 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
   - Gõ mật khẩu: mỗi ký tự một chấm màu quang phổ nảy lên; đang kiểm tra: chấm gợn sóng + chấm quay quanh avatar.
   - Sai: ô rung + tách màu đỏ/xanh; thông báo của PAM (vd. bị faillock) hiện bên dưới.
   - Mở: nội dung rơi xuống, tia sáng quét ngược trả lại desktop.
-- **Theme cyberpunk** (`lock/qml/cyber`, mặc định; đổi trong `lock/theme` hoặc `prism-lock --theme prism|cyberpunk`): HUD tối, một màu neon vàng, cyan rất ít, đỏ chỉ cho lỗi; font JetBrains Mono.
-  - Vào: desktop glitch (cắt lát lệch ngang + vệt màu) → tắt kiểu CRT thành một đường → đường neon mở ra HUD → tia quét vẽ HUD từ trên xuống, mọi nhãn tự "giải mã".
-  - Chờ: đồng hồ thỉnh thoảng glitch tách RGB, dải sáng mờ trôi xuống, vạch giây chạy trên thước, uptime đếm.
-  - Gõ: mỗi ký tự là katakana/ký hiệu nhấp nháy rồi thành khối vàng, khung sáng lên, mã hex đổi theo; con trỏ khối nhấp nháy.
-  - Kiểm tra: khung cyan, thanh đoạn chạy. Sai: khung đỏ, rung, tách RGB, `ACCESS DENIED // <lý do>`. Đúng: `ACCESS GRANTED`, HUD tắt kiểu CRT, desktop bật lại.
+- **Theme cyberpunk** (`lock/qml/cyber`, mặc định; đổi trong `lock/theme` hoặc `prism-lock --theme prism|cyberpunk`): HUD cam + cyan phát sáng trên nền tối (theo ảnh tham khảo HUD), đỏ chỉ cho lỗi; chữ Oswald (`~/.local/share/fonts/oswald`, OFL) + JetBrains Mono.
+  - Bố cục: đồng hồ `HH:MM:SS` cyan trong khung; lõi **SECURITY LOCK** (vòng cung cam quay, vòng vạch cyan, 12 lẫy khóa, ổ khóa vẽ tay); ô PASSCODE. Hai bên: SYSTEM, CPU LOAD (đồ thị chạy theo /proc/stat), POWER (đồng hồ vòng pin), ENVIRONMENT (đồng hồ vòng nhiệt độ + thời tiết + bàn phím), AUDIO.STREAM (cột sóng khi có nhạc), NETWORK.TRACE (hex chạy). Màn ngang có dải chữ chạy dưới đáy; màn dọc xếp panel 2 cột bên dưới.
+  - Vào: desktop glitch → tắt kiểu CRT → đường sáng mở HUD → tia quét vẽ HUD, góc khung bay vào, đồng hồ vòng quét lên, nhãn tự "giải mã".
+  - Gõ: mỗi ký tự sáng một lẫy khóa và thành một ký hiệu cyberpunk (katakana / Hy Lạp / Kirin, chọn theo vị trí, không theo ký tự gõ), nhấp nháy rồi chốt, thỉnh thoảng tự glitch lại.
+  - Kiểm tra: vòng chạy nhanh màu cyan, `VERIFYING`. Sai: toàn HUD đỏ, xé ngang, tách RGB, rung, `ACCESS DENIED // <lý do>`. Đúng: `ACCESS GRANTED`, càng khóa bật lên, vòng quay vút, HUD tắt kiểu CRT, desktop bật lại.
 - **Mỗi màn đều đầy đủ,** bố cục theo tỉ lệ: màn ngang thẻ nhạc góc trái dưới + chip góc phải dưới; màn dọc xếp giữa.
 - **Xem thử không cần mật khẩu:** `prism-lock --preview`, mở bằng `quickshell ipc -p ~/.config/prism/lock/qml call lock testUnlock` (chế độ này không gọi PAM nên không bao giờ tính là đăng nhập sai).
 - **Idle (hypridle):** tối màn ở phút 14, khóa ở phút 15, tắt màn ở phút 30; khóa trước khi suspend.

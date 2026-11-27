@@ -65,6 +65,26 @@ ShellRoot {
             }
         }
     }
+    // CPU load 0..1 from /proc/stat, for the HUD graph
+    property real cpu: 0
+    property var cpuLast: null
+    Process {
+        id: cpuProc
+        command: ["head", "-1", "/proc/stat"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const f = text.trim().split(/\s+/).slice(1).map(Number);
+                const idle = f[3] + (f[4] || 0), total = f.reduce((a, b) => a + b, 0);
+                if (root.cpuLast) {
+                    const dt = total - root.cpuLast.total, di = idle - root.cpuLast.idle;
+                    if (dt > 0) root.cpu = Math.max(0, Math.min(1, 1 - di / dt));
+                }
+                root.cpuLast = { total: total, idle: idle };
+            }
+        }
+    }
+    Timer { interval: 700; running: true; repeat: true; triggeredOnStart: true; onTriggered: cpuProc.running = true }
+
     readonly property string uptime: {
         const t = Math.max(0, Math.floor(now.getTime() / 1000 - bootEpoch));
         const p = n => String(n).padStart(2, "0");
@@ -101,6 +121,7 @@ ShellRoot {
         pam.start();
     }
     function succeed() {
+        message = "";
         phase = "unlocking";
         release.start();
     }
@@ -130,7 +151,7 @@ ShellRoot {
     // Let the exit animation finish, then hand the screens back
     SequentialAnimation {
         id: release
-        PauseAnimation { duration: 1120 }
+        PauseAnimation { duration: 1560 }
         ScriptAction { script: lock.locked = false }
         PauseAnimation { duration: 150 }
         ScriptAction { script: Qt.quit() }
