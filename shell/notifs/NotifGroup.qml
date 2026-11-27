@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import ".."
 
 // Notifications from one app. Collapsed: newest card with a stacked edge
@@ -6,11 +7,30 @@ import ".."
 Column {
     id: root
 
-    required property var group
-    readonly property bool expanded: !!Notifs.expanded[group.key]
-    readonly property int extra: group.items.length - 1
+    // Delegates are keyed by group key (see NotifCenter) so they survive
+    // list changes and keep their animations running.
+    required property string groupKey
+    readonly property var group: Notifs.groups.find(g => g.key === groupKey) ?? { key: groupKey, app: "", items: [] }
+    readonly property bool expanded: !!Notifs.expanded[groupKey]
+    // Index of the newest card that is not animating out
+    readonly property int firstLive: group.items.findIndex(n => !Notifs.isLeaving(n))
+    readonly property int extra: group.items.length - Math.max(firstLive, 0) - 1
+    // Whole group on its way out (cleared): fold the header away with the cards
+    readonly property bool leaving: firstLive < 0
+
+    property real fold: 1
 
     spacing: 8
+    height: implicitHeight * fold
+    clip: fold < 1
+    onLeavingChanged: if (leaving) foldOut.start()
+    Component.onCompleted: if (leaving) { fold = 0; opacity = 0; }
+
+    ParallelAnimation {
+        id: foldOut
+        NumberAnimation { target: root; property: "fold"; to: 0; duration: Notifs.leaveMs; easing.type: Easing.InOutCubic }
+        NumberAnimation { target: root; property: "opacity"; to: 0; duration: 200 }
+    }
 
     // Header: app glyph, name, count, expand and clear-group buttons
     Item {
@@ -78,8 +98,13 @@ Column {
         width: parent.width
         clip: true
 
-        readonly property real firstHeight: rep.count > 0 && rep.itemAt(0) ? rep.itemAt(0).height : 0
-        readonly property real collapsedHeight: firstHeight + (root.extra > 0 ? 8 : 0)
+        // Bottom edge of the newest live card. Cards leaving above it collapse,
+        // so this glides up instead of dipping and growing back.
+        readonly property real firstBottom: {
+            const it = rep.count > 0 && root.firstLive >= 0 ? rep.itemAt(root.firstLive) : null;
+            return it ? it.y + it.height : 0;
+        }
+        readonly property real collapsedHeight: firstBottom + (root.extra > 0 ? 8 : 0)
         height: root.expanded ? cards.implicitHeight : collapsedHeight
         Behavior on height { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
 
@@ -87,7 +112,7 @@ Column {
         Rectangle {
             x: 10
             width: parent.width - 20
-            y: viewport.firstHeight - 10
+            y: viewport.firstBottom - 10
             height: 18
             radius: 14
             color: Theme.chip
@@ -102,14 +127,14 @@ Column {
 
             Repeater {
                 id: rep
-                model: root.group.items
+                model: ScriptModel { values: root.group.items }
 
                 NotifCard {
                     required property var modelData
                     required property int index
                     width: cards.width
                     notif: modelData
-                    opacity: index === 0 || root.expanded ? 1 : 0
+                    opacity: index === root.firstLive || root.expanded ? 1 : 0
                     Behavior on opacity { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
                 }
             }

@@ -35,7 +35,7 @@ Scope {
                 spacing: 10
 
                 Repeater {
-                    model: Notifs.popups
+                    model: ScriptModel { values: Notifs.popups }
 
                     NotifCard {
                         id: card
@@ -60,7 +60,7 @@ Scope {
                                 return t > 0 ? Math.min(t < 1000 ? t * 1000 : t, 8000) : 5000;
                             }
                             running: !card.critical && !keep.hovered
-                            onTriggered: Notifs.dropPopup(card.notif)
+                            onTriggered: Notifs.hidePopup(card.notif)
                         }
 
                         Connections {

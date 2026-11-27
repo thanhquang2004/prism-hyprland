@@ -140,12 +140,13 @@ Scope {
                         visible: Notifs.count > 0
 
                         Repeater {
-                            model: Notifs.groups
+                            // Keyed by group key so delegates (and their animations) survive changes
+                            model: ScriptModel { values: Notifs.groups.map(g => g.key) }
 
                             NotifGroup {
-                                required property var modelData
+                                required property string modelData
                                 width: list.width
-                                group: modelData
+                                groupKey: modelData
                             }
                         }
                     }

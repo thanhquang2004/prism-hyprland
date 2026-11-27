@@ -16,15 +16,37 @@ Rectangle {
     readonly property bool critical: notif && notif.urgency === NotificationUrgency.Critical
     readonly property var buttons: notif ? notif.actions.filter(a => a.identifier !== "default" && a.text) : []
 
-    implicitHeight: body.implicitHeight + 30
+    // Exit animation: slide right + fade, then collapse the height so the
+    // cards below glide up. Notifs removes the notification after leaveMs.
+    property real collapse: 1
+    property real slide: 0
+    readonly property bool leaving: Notifs.isLeaving(notif)
+
+    implicitHeight: (body.implicitHeight + 30) * collapse
+    clip: collapse < 1
     radius: 20
     color: popup ? Theme.glass : (hover.hovered ? Theme.chipHover : Theme.chip)
     border.width: popup || critical ? 1 : 0
     border.color: critical ? Theme.warn : Theme.edge
     Behavior on color { ColorAnimation { duration: Theme.animFast } }
+    transform: Translate { x: root.slide }
+
+    onLeavingChanged: if (leaving) { wait.duration = Notifs.leaveDelay(notif); exit.start(); }
+    // Created while already leaving (shouldn't happen with keyed models): stay hidden
+    Component.onCompleted: if (leaving) { collapse = 0; opacity = 0; }
+
+    SequentialAnimation {
+        id: exit
+        PauseAnimation { id: wait; duration: 0 }
+        ParallelAnimation {
+            NumberAnimation { target: root; property: "slide"; to: 56; duration: 190; easing.type: Easing.InCubic }
+            NumberAnimation { target: root; property: "opacity"; to: 0; duration: 190; easing.type: Easing.InCubic }
+        }
+        NumberAnimation { target: root; property: "collapse"; to: 0; duration: 140; easing.type: Easing.InOutCubic }
+    }
 
     HoverHandler { id: hover }
-    TapHandler { onTapped: Notifs.activate(root.notif) }
+    TapHandler { enabled: !root.leaving; onTapped: Notifs.activate(root.notif) }
     SystemClock { id: clock; precision: SystemClock.Minutes }
 
     function ago(t) {

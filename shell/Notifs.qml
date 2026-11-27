@@ -58,10 +58,49 @@ Singleton {
 
     function toggleGroup(key) { expanded = Object.assign({}, expanded, { [key]: !expanded[key] }); }
 
+    // Removal is two-step so cards can animate out: mark as leaving (cards
+    // play their exit animation), then the reaper removes them for real.
+    property var leaving: ({})           // id -> { at: exit start (ms), n, popupOnly }
+    readonly property int leaveMs: 340   // must cover NotifCard's exit animation
+    readonly property int stagger: 35
+
+    function isLeaving(n) { return !!n && leaving[n.id] !== undefined; }
+    function leaveDelay(n) { return isLeaving(n) ? Math.max(0, leaving[n.id].at - Date.now()) : 0; }
+
+    function markLeaving(n, delay, popupOnly) {
+        if (!n || isLeaving(n)) return;
+        leaving = Object.assign({}, leaving, { [n.id]: { at: Date.now() + delay, n: n, popupOnly: popupOnly } });
+        reaper.start();
+    }
+
     function dropPopup(n) { popups = popups.filter(p => p !== n); }
-    function dismiss(n) { dropPopup(n); n.dismiss(); }
-    function dismissGroup(key) { for (const n of list.filter(x => keyOf(x) === key)) dismiss(n); }
-    function clearAll() { popups = []; for (const n of list) n.dismiss(); }
+    function hidePopup(n) { markLeaving(n, 0, true); }
+    function dismiss(n, delay) { markLeaving(n, delay ?? 0, false); }
+    function dismissGroup(key) { list.filter(x => keyOf(x) === key).forEach((n, i) => dismiss(n, i * stagger)); }
+    function clearAll() { list.forEach((n, i) => dismiss(n, i * stagger)); }
+
+    Timer {
+        id: reaper
+        interval: 40
+        repeat: true
+        onTriggered: {
+            const now = Date.now();
+            const keep = {};
+            let changed = false;
+            for (const id in root.leaving) {
+                const e = root.leaving[id];
+                if (now >= e.at + root.leaveMs) {
+                    root.dropPopup(e.n);
+                    if (!e.popupOnly) e.n.dismiss();
+                    changed = true;
+                } else {
+                    keep[id] = e;
+                }
+            }
+            if (changed) root.leaving = keep;
+            if (Object.keys(keep).length === 0) stop();
+        }
+    }
 
     // Click on a notification: run its default action, else open its app.
     function activate(n) {
@@ -98,6 +137,8 @@ Singleton {
         function toggle(): void { root.togglePanel(null); }
         function toggleDnd(): void { root.dnd = !root.dnd; }
         function clear(): void { root.clearAll(); }
+        function dismissGroup(key: string): void { root.dismissGroup(key); }
+        function dismissLatest(): void { root.dismiss(root.list.find(n => !root.isLeaving(n))); }
         function toggleGroup(key: string): void { root.toggleGroup(key); }
     }
 }
