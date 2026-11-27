@@ -548,7 +548,7 @@ Item {
                 // ---------- side columns
                 readonly property real colW: s.portrait ? (s.width - 2 * s.m * 1.6 - 40) / 2 : Math.min(380, s.width * 0.21)
                 readonly property real colTop: s.portrait ? auth.y + auth.height + 70 : s.height * 0.22
-                readonly property var player: Mpris.players.values.find(p => p.isPlaying) ?? null
+                readonly property var player: s.ctx.demo ? null : (Mpris.players.values.find(p => p.isPlaying) ?? null)
                 Timer { interval: 1000; running: page.player !== null; repeat: true; onTriggered: page.player.positionChanged() }
 
                 Column {

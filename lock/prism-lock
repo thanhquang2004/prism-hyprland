@@ -77,6 +77,8 @@ def accent():
 
 
 def display_name():
+    if os.environ.get("PRISM_DEMO_USER"):          # screenshots
+        return os.environ["PRISM_DEMO_USER"].capitalize()
     try:
         gecos = sh("getent", "passwd", os.environ.get("USER", "")).split(":")[4].split(",")[0]
     except IndexError:

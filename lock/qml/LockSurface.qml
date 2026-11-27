@@ -404,7 +404,7 @@ Item {
     readonly property real edgeGap: Math.round(36 * u)
 
     // Now playing
-    readonly property var player: Mpris.players.values.find(p => p.isPlaying) ?? null
+    readonly property var player: s.ctx.demo ? null : (Mpris.players.values.find(p => p.isPlaying) ?? null)
     Timer {
         interval: 1000; running: s.player !== null; repeat: true
         onTriggered: s.player.positionChanged()

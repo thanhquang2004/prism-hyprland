@@ -41,7 +41,7 @@ Item {
     property int sessionIndex: sessionModel.lastIndex >= 0 ? sessionModel.lastIndex : 0
     // users.count / sessions.count re-run these once the repeaters fill
     readonly property string userName: users.count > 0 ? (users.itemAt(userIndex)?.name ?? userModel.lastUser) : userModel.lastUser
-    readonly property string userReal: (users.count > 0 ? users.itemAt(userIndex)?.realName : "") || userName
+    readonly property string userReal: config.previewUser || (users.count > 0 ? users.itemAt(userIndex)?.realName : "") || userName
     readonly property string sessionName: sessions.count > 0 ? (sessions.itemAt(sessionIndex)?.name ?? "") : ""
     Repeater { id: users; model: userModel; delegate: Item { required property string name; required property string realName } }
     Repeater { id: sessions; model: sessionModel; delegate: Item { required property string name } }
@@ -55,7 +55,8 @@ Item {
     property date now: new Date()
     Timer { interval: 1000; running: true; repeat: true; onTriggered: s.now = new Date() }
 
-    property string host: sddm.hostName
+    // previewUser / previewHost in theme.conf replace the real names (screenshots)
+    property string host: config.previewHost || sddm.hostName
     property string kernel: ""
     property real bootEpoch: 0
     readonly property string uptime: {
@@ -609,7 +610,7 @@ Item {
                                 Text { width: 64; text: parent.k; color: s.dim; font { family: s.mono; pixelSize: 11; letterSpacing: 2 } }
                                 Text { text: parent.v; color: s.ink; font { family: s.mono; pixelSize: 12; features: { "tnum": 1 } } }
                             }
-                            KV { k: "USER"; v: s.userName }
+                            KV { k: "USER"; v: config.previewUser || s.userName }
                             KV { k: "KERNEL"; v: s.kernel || "--" }
                             KV { k: "UPTIME"; v: s.uptime }
                         }

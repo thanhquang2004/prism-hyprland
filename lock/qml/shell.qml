@@ -17,6 +17,8 @@ ShellRoot {
     id: root
 
     readonly property bool testMode: Quickshell.env("PRISM_LOCK_TEST") === "1"
+    // PRISM_DEMO_USER / PRISM_DEMO_HOST: fake names and no media, for screenshots
+    readonly property bool demo: (Quickshell.env("PRISM_DEMO_USER") ?? "") !== ""
     readonly property string cache: Quickshell.env("HOME") + "/.cache/prism/lock"
 
     property string phase: "enter"      // enter | idle | checking | unlocking
@@ -60,7 +62,7 @@ ShellRoot {
         stdout: StdioCollector {
             onStreamFinished: {
                 const l = text.trim().split("\n");
-                root.sys = { user: l[0], host: l[1], kernel: l[2] };
+                root.sys = { user: Quickshell.env("PRISM_DEMO_USER") || l[0], host: Quickshell.env("PRISM_DEMO_HOST") || l[1], kernel: l[2] };
                 root.bootEpoch = Date.now() / 1000 - parseFloat(l[3] || "0");
             }
         }
