@@ -46,16 +46,20 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 | Cửa sổ không focus | Hơi trong suốt (thấy blur phía sau) |
 | Hiệu ứng | Mượt, nhanh (~200ms, spring) + wobble khi kéo (0.57) |
 
-## 5. Màn hình khóa (hyprlock)
+## 5. Màn hình khóa (Quickshell, `lock/qml`)
 
-- **Mỗi màn hình đều đầy đủ**, bố cục theo tỉ lệ từng màn: màn ngang đẩy thẻ nhạc và chip trạng thái ra 2 góc dưới, màn dọc xếp giữa.
-- **Nền:** wallpaper hiện tại của chính màn đó, làm mờ và tối đi; màu nhấn lấy từ Prism (`~/.cache/prism/accent`).
-- **Đồng hồ kiểu poster:** giờ đậm, dấu `:` màu nhấn, phút mảnh, giây nhỏ màu nhấn trên cùng đường chân chữ; ngày viết hoa giãn chữ phía trên, lời chào theo giờ phía dưới.
-- **Đăng nhập:** một viên kính chứa avatar chữ cái (viền màu nhấn) và ô mật khẩu.
-- **Thẻ nhạc** (chỉ hiện khi đang phát): ảnh bìa, tên bài, nghệ sĩ, thanh tiến độ (`lock/nowplaying` vẽ PNG).
-- **Chip trạng thái:** pin, thời tiết, layout bàn phím.
+- **Chạy:** `prism-lock` (Ctrl+Alt+L, power menu, control center, hypridle). Chụp từng màn trước khi khóa để hiệu ứng vào/ra liền mạch; ảnh chụp xóa sau khi mở. Nếu màn khóa Prism không lên trong 5 giây hoặc crash khi đang khóa, tự chuyển sang hyprlock (cấu hình sinh ra ở `~/.cache/prism/hyprlock.conf`).
+- **Hiệu ứng "lăng kính":**
+  - Vào: tia sáng trắng kéo theo dải quang phổ quét chéo qua desktop, phía sau là wallpaper mờ + các vầng sáng trôi chậm; nội dung hiện lần lượt.
+  - Biểu tượng lăng kính: tia sáng vào, 6 tia màu ra, lấp lánh.
+  - Đồng hồ: giờ đậm, `:` màu nhấn nhịp theo giây, phút mảnh, giây nhỏ; mỗi chữ số lăn kiểu đồng hồ cơ khi đổi.
+  - Gõ mật khẩu: mỗi ký tự một chấm màu quang phổ nảy lên; đang kiểm tra: chấm gợn sóng + chấm quay quanh avatar.
+  - Sai: ô rung + tách màu đỏ/xanh; thông báo của PAM (vd. bị faillock) hiện bên dưới.
+  - Mở: nội dung rơi xuống, tia sáng quét ngược trả lại desktop.
+- **Mỗi màn đều đầy đủ,** bố cục theo tỉ lệ: màn ngang thẻ nhạc góc trái dưới + chip góc phải dưới; màn dọc xếp giữa.
+- **Xem thử không cần mật khẩu:** `prism-lock --preview`, mở bằng `quickshell ipc -p ~/.config/prism/lock/qml call lock testUnlock` (chế độ này không gọi PAM nên không bao giờ tính là đăng nhập sai).
 - **Idle (hypridle):** tối màn ở phút 14, khóa ở phút 15, tắt màn ở phút 30; khóa trước khi suspend.
-- **Mở khóa thử:** `prism-lock`, rồi `pkill -USR1 hyprlock` để mở mà không cần mật khẩu.
+- **Lưu ý faillock:** 3 lần sai liên tiếp khóa 10 phút (mặc định Arch). Không mở khóa test bằng `pkill -USR1 hyprlock`: hyprlock tính đó là một lần sai.
 
 ## 6. Wallpaper
 

@@ -1,23 +1,32 @@
 #!/usr/bin/env python3
-"""Lock the session with Prism's hyprlock look.
+"""Lock the session with Prism.
 
-Builds ~/.cache/prism/hyprlock.conf for the monitors connected right now
-(each one gets its own blurred wallpaper and a layout scaled to its shape),
-then runs hyprlock with it. Does nothing if hyprlock is already running.
+Saves a frame of every screen (the lock's entry and exit animations start
+and end on it), writes ~/.cache/prism/lock/session.json and runs the Prism
+lock screen (Quickshell, ./qml). If that has not locked the session within
+a few seconds, or crashes while locked, falls back to hyprlock with a
+generated config (~/.cache/prism/hyprlock.conf) so the screen always ends
+up locked. Does nothing if a lock is already running.
 
-    prism-lock            lock
-    prism-lock --config   only write the config and print its path
+    prism-lock             lock
+    prism-lock --preview   Prism lock in preview mode: no PAM, unlock with
+                           `quickshell ipc -p ~/.config/prism/lock/qml call lock testUnlock`
+    prism-lock --hyprlock  use the hyprlock fallback directly
+    prism-lock --config    only write the hyprlock config and print its path
 """
 import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 HOME = Path.home()
 HERE = Path(__file__).resolve().parent
 CACHE = HOME / ".cache/prism"
 CONF = CACHE / "hyprlock.conf"
+LOCKDIR = CACHE / "lock"
+QML = HERE / "qml"
 STATUS = HERE / "status"
 
 # Smoke tokens (see shell/Theme.qml); the lock is always dark for legibility
@@ -185,19 +194,84 @@ def write_config():
     return CONF
 
 
-def main():
-    conf = write_config()
-    if "--config" in sys.argv:
-        print(conf)
-        return
+def running():
+    """A Prism lock or hyprlock is already up."""
     if subprocess.run(["pidof", "hyprlock"], capture_output=True).returncode == 0:
+        return True
+    return subprocess.run(["pgrep", "-f", f"quickshell -p {QML}"], capture_output=True).returncode == 0
+
+
+def snapshot():
+    """Frame of each screen + session.json for the QML lock."""
+    LOCKDIR.mkdir(parents=True, exist_ok=True)
+    os.chmod(LOCKDIR, 0o700)
+    walls = wallpapers()
+    outputs, procs = {}, []
+    for name, _, _ in monitors():
+        shot = LOCKDIR / f"shot-{name}.png"
+        procs.append(subprocess.Popen(["grim", "-l", "0", "-o", name, str(shot)]))
+        outputs[name] = {"shot": str(shot), "wall": walls.get(name, "")}
+    for p in procs:
+        p.wait()
+    (LOCKDIR / "session.json").write_text(json.dumps({"user": display_name(), "accent": accent(), "outputs": outputs}))
+
+
+def cleanup():
+    for f in LOCKDIR.glob("shot-*.png"):
+        f.unlink(missing_ok=True)
+
+
+def is_locked():
+    out = sh("quickshell", "ipc", "-p", str(QML), "call", "lock", "state")
+    try:
+        return json.loads(out).get("locked") is True
+    except (ValueError, AttributeError):
+        return False
+
+
+def hyprlock():
+    os.execvp("hyprlock", ["hyprlock", "-c", str(write_config())])
+
+
+def main():
+    if "--config" in sys.argv:
+        print(write_config())
+        return
+    if running():
         return
     # Refresh weather in the background for the next lock (JaKooLit script, optional)
     weather = HOME / ".config/hypr/UserScripts/WeatherWrap.sh"
     if weather.exists():
         subprocess.Popen(["bash", str(weather)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                          start_new_session=True)
-    os.execvp("hyprlock", ["hyprlock", "-c", str(conf)])
+    if "--hyprlock" in sys.argv:
+        hyprlock()
+
+    os.umask(0o077)
+    snapshot()
+    env = dict(os.environ)
+    if "--preview" in sys.argv:
+        env["PRISM_LOCK_TEST"] = "1"
+    log = open(LOCKDIR / "quickshell.log", "w")
+    qs = subprocess.Popen(["quickshell", "-p", str(QML)], env=env, stdout=log, stderr=subprocess.STDOUT)
+
+    # The lock must be up quickly; otherwise hand over to hyprlock
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline and qs.poll() is None and not is_locked():
+        time.sleep(0.15)
+    preview = "--preview" in sys.argv
+    if qs.poll() is not None or not is_locked():
+        qs.kill()
+        cleanup()
+        if not preview:
+            hyprlock()
+        sys.exit("prism-lock: the Prism lock did not start, see " + str(LOCKDIR / "quickshell.log"))
+
+    code = qs.wait()
+    cleanup()
+    # A crash leaves the session locked with nothing on screen: take over
+    if code != 0 and not preview:
+        hyprlock()
 
 
 if __name__ == "__main__":
