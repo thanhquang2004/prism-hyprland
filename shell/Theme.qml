@@ -8,16 +8,17 @@ import Quickshell
 Singleton {
     id: root
 
-    // Glass
-    readonly property color glass: Qt.rgba(0.08, 0.09, 0.12, 0.76)
-    readonly property color glassHover: Qt.rgba(0.11, 0.12, 0.16, 0.82)
-    readonly property color edge: Qt.rgba(1, 1, 1, 0.12)
-    readonly property color edgeTop: Qt.rgba(1, 1, 1, 0.22)
+    // Glass ("Frost": white frosted glass). Keep alpha above the
+    // layer's ignore_alpha (0.1) or Hyprland skips the blur.
+    readonly property color glass: Qt.rgba(1, 1, 1, 0.16)
+    readonly property color glassHover: Qt.rgba(1, 1, 1, 0.22)
+    readonly property color edge: Qt.rgba(1, 1, 1, 0.32)
+    readonly property color edgeTop: Qt.rgba(1, 1, 1, 0.55)
 
     // Text
-    readonly property color text: "#f2f3f7"
-    readonly property color textDim: Qt.rgba(0.95, 0.96, 0.98, 0.62)
-    readonly property color accent: "#8ab4ff"
+    readonly property color text: "#ffffff"
+    readonly property color textDim: Qt.rgba(1, 1, 1, 0.72)
+    readonly property color accent: "#ffffff"
 
     // Type
     readonly property string font: "Inter"
