@@ -48,14 +48,14 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 ## 5. Màn hình khóa (hyprlock)
 
-- **Mỗi màn hình đều đầy đủ**, bố cục theo tỉ lệ từng màn (màn dọc xếp theo chiều dọc).
-- **Nội dung:**
-  - Đồng hồ lớn + ngày
-  - Avatar + tên
-  - Nhạc đang phát
-  - Pin, thời tiết, layout bàn phím
-- **Phong cách:** kính mờ đồng bộ với island, wallpaper hiện tại được làm mờ.
-- **Idle (hypridle):** khóa sau 15 phút, tắt màn sau 30 phút.
+- **Mỗi màn hình đều đầy đủ**, bố cục theo tỉ lệ từng màn: màn ngang đẩy thẻ nhạc và chip trạng thái ra 2 góc dưới, màn dọc xếp giữa.
+- **Nền:** wallpaper hiện tại của chính màn đó, làm mờ và tối đi; màu nhấn lấy từ Prism (`~/.cache/prism/accent`).
+- **Đồng hồ kiểu poster:** giờ đậm, dấu `:` màu nhấn, phút mảnh, giây nhỏ màu nhấn trên cùng đường chân chữ; ngày viết hoa giãn chữ phía trên, lời chào theo giờ phía dưới.
+- **Đăng nhập:** một viên kính chứa avatar chữ cái (viền màu nhấn) và ô mật khẩu.
+- **Thẻ nhạc** (chỉ hiện khi đang phát): ảnh bìa, tên bài, nghệ sĩ, thanh tiến độ (`lock/nowplaying` vẽ PNG).
+- **Chip trạng thái:** pin, thời tiết, layout bàn phím.
+- **Idle (hypridle):** tối màn ở phút 14, khóa ở phút 15, tắt màn ở phút 30; khóa trước khi suspend.
+- **Mở khóa thử:** `prism-lock`, rồi `pkill -USR1 hyprlock` để mở mà không cần mật khẩu.
 
 ## 6. Wallpaper
 
@@ -81,5 +81,5 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 2. ✅ OSD, chỉ báo họp, ẩn khi fullscreen, thông báo riêng (27/11).
 3. ✅ Control center (thả xuống từ cụm trạng thái) + màu nhấn từ wallpaper (27/11). Chưa có: vuốt touchpad (làm ở bước 0.57).
 4. ✅ Wallpaper: bộ ảnh riêng, đổi mỗi ngày, mỗi màn một ảnh, màn dọc có ảnh cắt (27/11).
-5. hyprlock + hypridle.
+5. ✅ hyprlock + hypridle (27/11).
 6. Lên 0.57: `hyprland.lua` hoàn chỉnh, wobble, tắt waybar/JaKooLit (giữ bản sao lưu).

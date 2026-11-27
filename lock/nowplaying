@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+"""Now-playing card for the Prism lock screen.
+
+hyprlock's `image` widget runs this every couple of seconds (reload_cmd)
+and shows whatever PNG path it prints: a glass card with album art, title,
+artist and progress while something plays, or a transparent pixel when
+nothing does.
+"""
+import hashlib
+import html
+import os
+import shutil
+import subprocess
+import urllib.request
+from pathlib import Path
+
+CACHE = Path.home() / ".cache/prism/lock"
+W, H = 400, 96
+ART = 64
+
+
+def sh(*cmd):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=3).stdout.strip()
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+
+
+def accent():
+    try:
+        return "#" + (Path.home() / ".cache/prism/accent").read_text().strip()
+    except OSError:
+        return "#9ab4ff"
+
+
+def empty():
+    p = CACHE / "empty.png"
+    if not p.exists():
+        subprocess.run(["magick", "-size", "1x1", "xc:none", str(p)])
+    return p
+
+
+def fetch_art(url):
+    """Local copy of the cover, or None."""
+    if not url:
+        return None
+    if url.startswith("file://"):
+        p = Path(urllib.request.url2pathname(url[7:]))
+        return p if p.exists() else None
+    if url.startswith(("http://", "https://")):
+        p = CACHE / ("art-" + hashlib.sha1(url.encode()).hexdigest()[:16])
+        if not p.exists():
+            try:
+                with urllib.request.urlopen(url, timeout=3) as r, open(p, "wb") as f:
+                    shutil.copyfileobj(r, f)
+            except OSError:
+                return None
+        return p
+    return None
+
+
+def main():
+    CACHE.mkdir(parents=True, exist_ok=True)
+    fake = os.environ.get("PRISM_NP_TEST")          # "title\tartist\tartUrl\tpos\tlen", for previews
+    if not fake and sh("playerctl", "status") != "Playing":
+        print(empty())
+        return
+    fmt = "{{title}}\t{{artist}}\t{{mpris:artUrl}}\t{{position}}\t{{mpris:length}}"
+    parts = ((fake or sh("playerctl", "metadata", "--format", fmt)).split("\t") + [""] * 5)[:5]
+    title, artist, art_url, pos, length = parts
+    try:
+        progress = max(0.0, min(1.0, int(pos) / int(length)))
+    except (ValueError, ZeroDivisionError):
+        progress = 0.0
+
+    acc = accent()
+    key = hashlib.sha1(f"{title}|{artist}|{art_url}|{round(progress * 60)}|{acc}".encode()).hexdigest()[:16]
+    out = CACHE / f"np-{key}.png"
+    if out.exists():
+        print(out)
+        return
+    for old in CACHE.glob("np-*.png"):
+        old.unlink()
+
+    tx = 16 + ART + 16                     # text column
+    tw = W - tx - 18
+    cmd = ["magick", "-size", f"{W}x{H}", "xc:none",
+           # glass card
+           "-fill", "rgba(15,18,23,0.46)", "-stroke", "rgba(255,255,255,0.12)", "-strokewidth", "1",
+           "-draw", f"roundrectangle 0.5,0.5 {W - 1.5},{H - 1.5} 26,26", "-stroke", "none"]
+
+    art = fetch_art(art_url)
+    if art:
+        cmd += ["(", str(art), "-alpha", "set", "-resize", f"{ART}x{ART}^", "-gravity", "center", "-extent", f"{ART}x{ART}",
+                "(", "-size", f"{ART}x{ART}", "xc:none", "-fill", "white",
+                "-draw", f"roundrectangle 0,0 {ART - 1},{ART - 1} 14,14", ")",
+                "-compose", "DstIn", "-composite", ")",
+                "-gravity", "northwest", "-geometry", f"+16+{(H - ART) // 2}", "-compose", "over", "-composite"]
+    else:
+        cmd += ["-fill", "rgba(255,255,255,0.08)",
+                "-draw", f"roundrectangle 16,{(H - ART) // 2} {16 + ART},{(H + ART) // 2} 14,14",
+                "(", "-background", "none", f"pango:<span font_family='JetBrainsMono Nerd Font' size='22pt' foreground='{acc}'>\U000F075A</span>", ")",
+                "-gravity", "northwest", "-geometry", f"+{16 + ART // 2 - 14}+{H // 2 - 18}", "-composite"]
+
+    def text(markup, y):
+        return ["(", "+gravity", "-size", f"{tw}x", "-background", "none", "-define", "pango:wrap=char",
+                "-define", "pango:ellipsize=end", "-define", "pango:single-paragraph=true",
+                f"pango:{markup}", ")", "-gravity", "northwest", "-geometry", f"+{tx}+{y}", "-composite"]
+
+    e = html.escape
+    cmd += text(f"<span font_family='Inter' weight='600' size='7.5pt' letter_spacing='1600' foreground='{acc}'>NOW PLAYING</span>", 17)
+    cmd += text(f"<span font_family='Inter' weight='600' size='11.5pt' foreground='#ffffff'>{e(title or 'Unknown')}</span>", 34)
+    cmd += text(f"<span font_family='Inter' size='10pt' foreground='#ffffffb3'>{e(artist or '')}</span>", 56)
+    # progress
+    bar_y = H - 16
+    cmd += ["-fill", "rgba(255,255,255,0.14)", "-draw", f"roundrectangle {tx},{bar_y} {W - 18},{bar_y + 3} 1.5,1.5"]
+    if progress > 0:
+        cmd += ["-fill", acc, "-draw", f"roundrectangle {tx},{bar_y} {tx + max(3, int((W - 18 - tx) * progress))},{bar_y + 3} 1.5,1.5"]
+    cmd += [str(out)]
+    if subprocess.run(cmd, capture_output=True).returncode != 0:
+        print(empty())
+        return
+    print(out)
+
+
+if __name__ == "__main__":
+    main()

@@ -75,6 +75,21 @@ Singleton {
         return cs.reduce((a, b) => (b.hslSaturation * (1 - Math.abs(b.hslLightness - 0.5)) > a.hslSaturation * (1 - Math.abs(a.hslLightness - 0.5)) ? b : a));
     }
     readonly property color accent: Qt.hsla(wallTone.hslHue, Math.min(Math.max(wallTone.hslSaturation, 0.45), 0.75), dark ? 0.72 : 0.44, 1)
+    // The lock screen (hyprlock, always Smoke) reads the accent from here
+    FileView {
+        id: accentFile
+        path: Quickshell.env("HOME") + "/.cache/prism/accent"
+        printErrors: false
+    }
+    onWallToneChanged: lockAccentSave.restart()
+    Timer {
+        id: lockAccentSave
+        interval: 500
+        onTriggered: {
+            const c = Qt.hsla(root.wallTone.hslHue, Math.min(Math.max(root.wallTone.hslSaturation, 0.45), 0.75), 0.72, 1);
+            accentFile.setText(c.toString().slice(1) + "\n");
+        }
+    }
     // Ink on top of an accent fill
     readonly property color onAccent: dark ? "#111318" : "#ffffff"
     readonly property color warn: dark ? "#ffb4a2" : "#b3261e"

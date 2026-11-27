@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+"""Lock the session with Prism's hyprlock look.
+
+Builds ~/.cache/prism/hyprlock.conf for the monitors connected right now
+(each one gets its own blurred wallpaper and a layout scaled to its shape),
+then runs hyprlock with it. Does nothing if hyprlock is already running.
+
+    prism-lock            lock
+    prism-lock --config   only write the config and print its path
+"""
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+HOME = Path.home()
+HERE = Path(__file__).resolve().parent
+CACHE = HOME / ".cache/prism"
+CONF = CACHE / "hyprlock.conf"
+STATUS = HERE / "status"
+
+# Smoke tokens (see shell/Theme.qml); the lock is always dark for legibility
+TEXT = "ffffff"
+DIM = "ffffffb3"
+FAINT = "ffffff73"
+GLASS = "0f121766"
+EDGE = "ffffff1f"
+WARN = "ffb4a2"
+FONT = "Inter"
+DISPLAY = "Inter Display"
+ICONS = "JetBrainsMono Nerd Font"
+
+
+def sh(*cmd):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=5).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+
+
+def monitors():
+    out = []
+    for m in json.loads(sh("hyprctl", "monitors", "-j") or "[]"):
+        w, h = m["width"] / m["scale"], m["height"] / m["scale"]
+        if m["transform"] % 2:
+            w, h = h, w
+        out.append((m["name"], w, h))
+    return out
+
+
+def wallpapers():
+    walls = {}
+    for line in sh("swww", "query").splitlines():
+        # ": eDP-1: 1920x1200, scale: 1, currently displaying: image: /path.png"
+        parts = line.lstrip(": ").split(":", 1)
+        if "image:" in line and len(parts) == 2:
+            walls[parts[0].strip()] = line.split("image:", 1)[1].strip()
+    return walls
+
+
+def accent():
+    try:
+        return (CACHE / "accent").read_text().strip() or "9ab4ff"
+    except OSError:
+        return "9ab4ff"
+
+
+def display_name():
+    try:
+        gecos = sh("getent", "passwd", os.environ.get("USER", "")).split(":")[4].split(",")[0]
+    except IndexError:
+        gecos = ""
+    return gecos or os.environ.get("USER", "you").capitalize()
+
+
+def block(kind, **kv):
+    body = "\n".join(f"    {k} = {v}" for k, v in kv.items())
+    return f"{kind} {{\n{body}\n}}\n"
+
+
+def layout(name, w, h, wall, acc, user):
+    """Widgets for one monitor. Offsets scale with the screen height so a
+    portrait screen spreads the same column over its taller canvas."""
+    portrait = h > w
+    u = min(h / 1200, 1.45)           # 1.0 on a 1920x1200 screen
+    y = lambda f: round(h * f)        # noqa: E731
+    base = dict(monitor=name, halign="center", valign="center")
+    out = []
+
+    if wall and Path(wall).exists():
+        out.append(block("background", monitor=name, path=wall, blur_passes=3, blur_size=9,
+                         noise=0.014, contrast=0.92, brightness=0.55, vibrancy=0.25))
+    else:
+        out.append(block("background", monitor=name, color="rgb(15171c)"))
+
+    # Clock: bold hours, accent colon, thin minutes, small accent seconds on the baseline.
+    # "13:48  07" measures ~4.25 em in Inter Display; keep it inside 85% of the width.
+    clock = round(min((250 if portrait else 200) * u / (1.45 if portrait else 1), w * 0.85 / 4.3))
+    clock_y = y(0.2 if portrait else 0.17)
+    markup = ("<span font_features='tnum'>"
+              "<span weight='600'>$(date +%H)</span>"
+              f"<span weight='250' foreground='##{acc}'>:</span>"
+              "<span weight='200'>$(date +%M)</span>"
+              f"<span size='22%' weight='500' foreground='##{acc}'>  $(date +%S)</span>"
+              "</span>")
+    out.append(block("label", **base, text=f'cmd[update:1000] echo "{markup}"',
+                     color=f"rgb({TEXT})", font_size=clock, font_family=DISPLAY,
+                     position=f"0, {clock_y}"))
+    # Date above (letter-spaced, accent dash), greeting below
+    date_y = clock_y + round(clock * 0.78)
+    out.append(block("shape", **base, size="28, 3", rounding=2, color=f"rgb({acc})",
+                     position=f"0, {date_y + 26}"))
+    out.append(block("label", **base,
+                     text="cmd[update:60000] echo \"<span letter_spacing='3200'>$(date '+%A  ·  %-d %B' | tr a-z A-Z)</span>\"",
+                     color=f"rgba({DIM})", font_size=round(13 * u), font_family=f"{FONT} SemiBold",
+                     position=f"0, {date_y}"))
+    out.append(block("label", **base, text=f"cmd[update:60000] {STATUS} greeting '{user}'",
+                     color=f"rgba({DIM})", font_size=round(18 * u), font_family=FONT,
+                     position=f"0, {clock_y - round(clock * 0.72)}"))
+
+    # Login pill: avatar monogram with an accent ring, password field inside one glass card
+    card_w, card_h, av = 400, 72, 52
+    card_y = y(-0.11 if portrait else -0.13)
+    out.append(block("shape", **base, size=f"{card_w}, {card_h}", rounding=-1, color=f"rgba({GLASS})",
+                     border_size=1, border_color=f"rgba({EDGE})", position=f"0, {card_y}"))
+    av_x = -card_w // 2 + 10 + av // 2
+    out.append(block("shape", **base, size=f"{av}, {av}", rounding=-1, color="rgba(ffffff14)",
+                     border_size=2, border_color=f"rgb({acc})", position=f"{av_x}, {card_y}"))
+    out.append(block("label", **base, text=user[:1].upper(), color=f"rgb({acc})", font_size=21,
+                     font_family=f"{FONT} SemiBold", position=f"{av_x}, {card_y}"))
+    field_l, field_r = av_x + av // 2 + 8, card_w // 2 - 10
+    out.append(block("input-field", **base, size=f"{field_r - field_l}, 52",
+                     position=f"{(field_l + field_r) // 2}, {card_y}",
+                     rounding=-1, outline_thickness=2,
+                     outer_color="rgba(00000000)", inner_color="rgba(00000000)",
+                     font_color=f"rgb({TEXT})", font_family=FONT,
+                     check_color=f"rgba({acc}99)", fail_color=f"rgba({WARN}cc)", capslock_color=f"rgba({WARN}99)",
+                     fade_on_empty="false", dots_size=0.2, dots_spacing=0.45, dots_center="false",
+                     placeholder_text=f'<span foreground="##{FAINT}">Enter password</span>',
+                     fail_text=f'<span foreground="##{WARN}">$FAIL</span>'))
+
+    # Bottom: now-playing card and status chips. Landscape spreads them to the
+    # corners; portrait stacks them in the middle.
+    edge = round(36 * u)
+    chip_h = 40
+    chips = [(118, f"cmd[update:30000] {STATUS} battery"),
+             (210, f"cmd[update:600000] {STATUS} weather"),
+             (170, "󰌌  $LAYOUT")]
+    gap = 10
+    row_w = sum(cw for cw, _ in chips) + gap * (len(chips) - 1)
+    # Chips use center anchoring, so x is the chip center's offset from the screen center
+    x = -row_w // 2 if portrait else w // 2 - edge - row_w
+    if portrait:
+        np_pos = dict(halign="center", position=f"0, {edge + chip_h + 18}")
+    else:
+        np_pos = dict(halign="left", position=f"{edge}, {edge}")
+    for cw, text in chips:
+        cx = round(x + cw / 2)
+        bottom = dict(monitor=name, halign="center", valign="bottom")
+        out.append(block("shape", **bottom, size=f"{cw}, {chip_h}", rounding=-1, color=f"rgba({GLASS})",
+                         border_size=1, border_color=f"rgba({EDGE})", position=f"{cx}, {edge}"))
+        out.append(block("label", **bottom, text=text, color=f"rgb({TEXT})", font_size=12,
+                         font_family=f"{FONT} Medium, {ICONS}", position=f"{cx}, {edge + 12}"))
+        x += cw + gap
+    out.append(block("image", monitor=name, valign="bottom", **np_pos, path=str(CACHE / "lock/empty.png"),
+                     size=96, rounding=0, border_size=0, reload_time=2, reload_cmd=str(HERE / "nowplaying")))
+    return out
+
+
+def write_config():
+    CACHE.mkdir(parents=True, exist_ok=True)
+    subprocess.run([str(HERE / "nowplaying")], capture_output=True)   # creates empty.png
+    walls, acc, user = wallpapers(), accent(), display_name()
+    parts = [
+        "# Generated by ~/.config/prism/lock/prism-lock; edits are overwritten\n",
+        block("general", hide_cursor="true", ignore_empty_input="true"),
+        block("animations", enabled="true",
+              bezier="prism, 0.22, 1, 0.36, 1",
+              animation="fade, 1, 4, prism\n    animation = inputFieldDots, 1, 2, prism"),
+    ]
+    for name, w, h in monitors():
+        parts += layout(name, w, h, walls.get(name, ""), acc, user)
+    CONF.write_text("\n".join(parts))
+    return CONF
+
+
+def main():
+    conf = write_config()
+    if "--config" in sys.argv:
+        print(conf)
+        return
+    if subprocess.run(["pidof", "hyprlock"], capture_output=True).returncode == 0:
+        return
+    # Refresh weather in the background for the next lock (JaKooLit script, optional)
+    weather = HOME / ".config/hypr/UserScripts/WeatherWrap.sh"
+    if weather.exists():
+        subprocess.Popen(["bash", str(weather)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True)
+    os.execvp("hyprlock", ["hyprlock", "-c", str(conf)])
+
+
+if __name__ == "__main__":
+    main()

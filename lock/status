@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Small text providers for the Prism lock screen (hyprlock `cmd[...]` labels).
+#   status battery | weather | music | greeting NAME
+case "${1:-}" in
+greeting)
+    h=$((10#$(date +%H)))
+    if ((h < 5)); then g="Good night"
+    elif ((h < 12)); then g="Good morning"
+    elif ((h < 18)); then g="Good afternoon"
+    else g="Good evening"; fi
+    echo "$g, ${2:-there}"
+    ;;
+battery)
+    bat=$(ls -d /sys/class/power_supply/BAT* 2>/dev/null | head -1)
+    [[ -z $bat ]] && exit 0
+    cap=$(<"$bat/capacity")
+    state=$(<"$bat/status")
+    if [[ $state == Charging ]]; then icon=󰂄
+    elif ((cap > 90)); then icon=󰁹
+    elif ((cap > 70)); then icon=󰂀
+    elif ((cap > 50)); then icon=󰁾
+    elif ((cap > 30)); then icon=󰁼
+    elif ((cap > 15)); then icon=󰁺
+    else icon=󰂎; fi
+    echo "$icon  $cap%"
+    ;;
+weather)
+    # Written by the weather script: line 2 "<icon>  Overcast", line 3 "<icon>  34°C (Feels like ...)"
+    f=$HOME/.cache/.weather_cache
+    [[ -r $f ]] || { echo "󰖐  --"; exit 0; }
+    desc=$(sed -n 2p "$f")
+    temp=$(sed -n 3p "$f" | grep -oE -- '-?[0-9]+°C' | head -1)
+    echo "${desc%%  *}   ${temp:---}  ${desc#*  }"
+    ;;
+music)
+    [[ $(playerctl status 2>/dev/null) == Playing ]] || exit 0
+    line=$(playerctl metadata --format '{{title}}  ·  {{artist}}' 2>/dev/null)
+    ((${#line} > 60)) && line="${line:0:58}…"
+    # Escape for Pango markup
+    line=${line//&/&amp;}; line=${line//</&lt;}; line=${line//>/&gt;}
+    echo "󰝚  $line"
+    ;;
+esac

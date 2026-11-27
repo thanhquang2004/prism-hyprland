@@ -31,5 +31,6 @@ quickshell -p ~/.config/prism/shell
   - `cc/`: control center (quick toggles, sliders, Wi-Fi / Bluetooth / Sound pages); `Hypr.qml` sets Hyprland options on 0.56 and 0.57; `Wallpaper.qml` feeds the accent color
   - `Wallpaper.qml`: daily wallpaper per screen from `~/Pictures/wallpapers/prism/{landscape,portrait}` via swww; state in `~/.cache/prism/wallpaper.json` (`quickshell ipc -p ~/.config/prism/shell call wallpaper next [output]`, `rescan`, `state`)
 - `wallpaper/crop_portrait.py`: portrait cuts of the landscape set, cached in `~/.cache/prism/wallpaper-portrait`
+- `lock/`: lock screen. `prism-lock` (linked into `~/.local/bin`, bound to Ctrl+Alt+L, used by hypridle's `lock_cmd` so `loginctl lock-session` and the power menu go through it) writes `~/.cache/prism/hyprlock.conf` for the connected monitors and runs hyprlock; `status` and `nowplaying` feed its labels and music card; `hypridle.conf` (started from `~/.config/hypr/configs/Startup_Apps.conf`)
 - `bin/prism-wall`: random wallpaper now (`prism-wall` = focused screen, `prism-wall all`, `prism-wall DP-1`); linked into `~/.local/bin`, bound to Ctrl+Alt+W / Ctrl+Alt+Shift+W in `~/.config/hypr/UserConfigs/UserKeybinds.conf` and `keybinds.lua`
   - `Icons.qml`: monochrome icon set
