@@ -8,6 +8,10 @@ local prism  = home .. "/.config/prism"
 local scripts = home .. "/.config/hypr/scripts"
 local qsPrism = "quickshell -p " .. prism .. "/shell"
 
+-- This file is a symlink; look for modules (monitors.lua from nwg-displays,
+-- rules.lua, keybinds.lua) in ~/.config/hypr first
+package.path = home .. "/.config/hypr/?.lua;" .. package.path
+
 require("monitors")
 
 ---------------------------------------------------------------- environment
