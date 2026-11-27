@@ -60,7 +60,7 @@ Row {
                     anchors.verticalCenter: parent.verticalCenter
                     text: chip.modelData.id
                     color: chip.current ? Theme.text : Theme.textDim
-                    font { family: Theme.font; pixelSize: 13; weight: chip.current ? Font.Bold : Font.Medium; features: { "tnum": 1 } }
+                    font { family: Theme.font; pixelSize: 13; styleName: chip.current ? "Bold" : "Medium"; features: { "tnum": 1 } }
                 }
 
                 Repeater {

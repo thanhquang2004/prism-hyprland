@@ -53,7 +53,7 @@ Column {
             Text {
                 text: root.group.app
                 color: Theme.textDim
-                font { family: Theme.font; pixelSize: 14; weight: Font.DemiBold }
+                font { family: Theme.font; pixelSize: 14; styleName: "SemiBold" }
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {

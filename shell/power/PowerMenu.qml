@@ -114,12 +114,12 @@ Scope {
                             Text {
                                 text: btn.modelData.label
                                 color: Theme.text
-                                font { family: Theme.font; pixelSize: 15; weight: Font.DemiBold }
+                                font { family: Theme.font; pixelSize: 15; styleName: "SemiBold" }
                             }
                             Text {
                                 text: btn.modelData.key
                                 color: Theme.textFaint
-                                font { family: Theme.font; pixelSize: 12; weight: Font.Medium }
+                                font { family: Theme.font; pixelSize: 12; styleName: "Medium" }
                             }
                         }
                     }
@@ -142,7 +142,7 @@ Scope {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: win.pendingAction ? `${win.pendingAction.label} in ${Power.remaining}…` : ""
                     color: Theme.text
-                    font { family: Theme.font; pixelSize: 30; weight: Font.DemiBold; features: { "tnum": 1 } }
+                    font { family: Theme.font; pixelSize: 30; styleName: "SemiBold"; features: { "tnum": 1 } }
                 }
                 Rectangle {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -156,7 +156,7 @@ Scope {
                         anchors.centerIn: parent
                         text: "Cancel  ·  Esc"
                         color: Theme.text
-                        font { family: Theme.font; pixelSize: 15; weight: Font.DemiBold }
+                        font { family: Theme.font; pixelSize: 15; styleName: "SemiBold" }
                     }
                 }
             }

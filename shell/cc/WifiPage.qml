@@ -70,7 +70,7 @@ Column {
             anchors { right: parent.right; rightMargin: 14; verticalCenter: parent.verticalCenter }
             text: "Join"
             color: Theme.accent
-            font { family: Theme.font; pixelSize: 13; weight: Font.DemiBold }
+            font { family: Theme.font; pixelSize: 13; styleName: "SemiBold" }
             function submit() {
                 if (root.askingFor && pass.text) root.askingFor.connectWithPsk(pass.text);
                 root.askingFor = null;

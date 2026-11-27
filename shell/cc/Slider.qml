@@ -76,7 +76,7 @@ Item {
         horizontalAlignment: Text.AlignRight
         text: Math.round(root.value * 100) + "%"
         color: Theme.textDim
-        font { family: Theme.font; pixelSize: 12; weight: Font.Medium; features: { "tnum": 1 } }
+        font { family: Theme.font; pixelSize: 12; styleName: "Medium"; features: { "tnum": 1 } }
     }
 
     Item {

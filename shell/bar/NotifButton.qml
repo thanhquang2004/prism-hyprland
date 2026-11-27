@@ -32,7 +32,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             text: Notifs.count > 99 ? "99+" : Notifs.count
             color: Theme.text
-            font { family: Theme.font; pixelSize: 12; weight: Font.Bold; features: { "tnum": 1 } }
+            font { family: Theme.font; pixelSize: 12; styleName: "Bold"; features: { "tnum": 1 } }
         }
     }
 

@@ -46,7 +46,7 @@ Rectangle {
             text: root.label
             elide: Text.ElideRight
             color: root.ink
-            font { family: Theme.font; pixelSize: 13; weight: Font.DemiBold }
+            font { family: Theme.font; pixelSize: 13; styleName: "SemiBold" }
         }
         Text {
             visible: root.sublabel !== ""

@@ -28,7 +28,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             text: root.title
             color: Theme.text
-            font { family: Theme.font; pixelSize: 17; weight: Font.Bold }
+            font { family: Theme.font; pixelSize: 17; styleName: "Bold" }
         }
     }
 

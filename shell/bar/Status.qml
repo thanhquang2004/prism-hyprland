@@ -36,7 +36,7 @@ Row {
             anchors.verticalCenter: parent.verticalCenter
             text: parent.label
             color: Theme.textDim
-            font { family: Theme.font; pixelSize: 12; weight: Font.Medium; features: { "tnum": 1 } }
+            font { family: Theme.font; pixelSize: 12; styleName: "Medium"; features: { "tnum": 1 } }
         }
     }
 

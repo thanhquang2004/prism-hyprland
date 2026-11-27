@@ -49,7 +49,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 text: stopHover.hovered ? "Stop" : "Sharing"
                 color: Theme.text
-                font { family: Theme.font; pixelSize: 12; weight: Font.DemiBold }
+                font { family: Theme.font; pixelSize: 12; styleName: "SemiBold" }
             }
             HoverHandler { id: stopHover; cursorShape: Qt.PointingHandCursor }
             TapHandler { onTapped: Privacy.stopSharing() }

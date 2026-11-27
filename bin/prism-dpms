@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Screens off/on on any Hyprland: 0.57+ takes Lua dispatchers, older takes `dpms`.
+#   prism-dpms off | on
+set -eu
+want=${1:?usage: prism-dpms off|on}
+if hyprctl version -j 2>/dev/null | grep -q '"tag": *"v0\.5[0-6]'; then
+    exec hyprctl dispatch dpms "$want"
+fi
+[[ $want == off ]] && action=disable || action=enable
+exec hyprctl dispatch "hl.dsp.dpms({ action = \"$action\" })"

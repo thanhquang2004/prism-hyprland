@@ -116,7 +116,7 @@ Scope {
                                     anchors.verticalCenter: parent.verticalCenter
                                     text: Qt.formatDateTime(clock.date, "dddd, MMMM d")
                                     color: Theme.text
-                                    font { family: Theme.font; pixelSize: 17; weight: Font.Bold }
+                                    font { family: Theme.font; pixelSize: 17; styleName: "Bold" }
                                 }
                                 Text {
                                     visible: win.battery && win.battery.isLaptopBattery
@@ -126,7 +126,7 @@ Scope {
                                     readonly property int secs: win.battery ? (charging ? win.battery.timeToFull : win.battery.timeToEmpty) : 0
                                     text: Math.round(pct * 100) + "%" + (secs > 0 ? "  ·  " + Math.floor(secs / 3600) + "h " + Math.round(secs % 3600 / 60) + "m" + (charging ? " to full" : " left") : "")
                                     color: Theme.textDim
-                                    font { family: Theme.font; pixelSize: 12; weight: Font.Medium; features: { "tnum": 1 } }
+                                    font { family: Theme.font; pixelSize: 12; styleName: "Medium"; features: { "tnum": 1 } }
                                 }
                             }
 

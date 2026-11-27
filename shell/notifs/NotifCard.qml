@@ -101,7 +101,7 @@ Rectangle {
                     text: root.notif ? root.notif.summary : ""
                     elide: Text.ElideRight
                     color: Theme.text
-                    font { family: Theme.font; pixelSize: 15; weight: Font.DemiBold }
+                    font { family: Theme.font; pixelSize: 15; styleName: "SemiBold" }
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Text {
@@ -158,7 +158,7 @@ Rectangle {
                             anchors.centerIn: parent
                             text: btn.modelData.text
                             color: Theme.text
-                            font { family: Theme.font; pixelSize: 13; weight: Font.Medium }
+                            font { family: Theme.font; pixelSize: 13; styleName: "Medium" }
                         }
                         HoverHandler { id: btnHover; cursorShape: Qt.PointingHandCursor }
                         TapHandler {

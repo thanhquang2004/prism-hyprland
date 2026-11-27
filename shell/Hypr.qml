@@ -76,4 +76,14 @@ Singleton {
     }
     function refresh() { snapshot.running = true; }
     Component.onCompleted: refresh()
+
+    // Keybinds use these (they replace the old JaKooLit ChangeBlur /
+    // ChangeLayout / GameMode scripts)
+    IpcHandler {
+        target: "hypr"
+        function toggleBlur(): void { root.setBlur(!root.blur); }
+        function toggleLayout(): void { root.setLayout(root.layout === "master" ? "dwindle" : "master"); }
+        function toggleGameMode(): void { root.setGameMode(!root.gameMode); }
+        function state(): string { return JSON.stringify({ blur: root.blur, layout: root.layout, gameMode: root.gameMode }); }
+    }
 }

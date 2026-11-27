@@ -86,7 +86,7 @@ Scope {
                     horizontalAlignment: Text.AlignRight
                     text: win.label
                     color: Theme.text
-                    font { family: Theme.font; pixelSize: 14; weight: Font.DemiBold; features: { "tnum": 1 } }
+                    font { family: Theme.font; pixelSize: 14; styleName: "SemiBold"; features: { "tnum": 1 } }
                 }
 
                 // Mic on/off: center the label next to the glyph instead of a bar

@@ -80,7 +80,7 @@ Column {
             anchors.centerIn: parent
             text: root.adapter && root.adapter.discovering ? "Stop scanning" : "Scan for devices"
             color: Theme.text
-            font { family: Theme.font; pixelSize: 13; weight: Font.Medium }
+            font { family: Theme.font; pixelSize: 13; styleName: "Medium" }
         }
         HoverHandler { id: scanHover; cursorShape: Qt.PointingHandCursor }
         TapHandler { onTapped: root.adapter.discovering = !root.adapter.discovering }

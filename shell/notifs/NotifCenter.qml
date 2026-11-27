@@ -70,7 +70,7 @@ Scope {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Notifications"
                         color: Theme.text
-                        font { family: Theme.font; pixelSize: 18; weight: Font.Bold }
+                        font { family: Theme.font; pixelSize: 18; styleName: "Bold" }
                     }
 
                     Row {
@@ -95,7 +95,7 @@ Scope {
                                 Text {
                                     text: "Do not disturb"
                                     color: Theme.text
-                                    font { family: Theme.font; pixelSize: 12; weight: Font.Medium }
+                                    font { family: Theme.font; pixelSize: 12; styleName: "Medium" }
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
                             }
@@ -114,7 +114,7 @@ Scope {
                                 anchors.centerIn: parent
                                 text: "Clear all"
                                 color: Theme.text
-                                font { family: Theme.font; pixelSize: 12; weight: Font.Medium }
+                                font { family: Theme.font; pixelSize: 12; styleName: "Medium" }
                             }
                             HoverHandler { id: clearHover; cursorShape: Qt.PointingHandCursor }
                             TapHandler { onTapped: Notifs.clearAll() }

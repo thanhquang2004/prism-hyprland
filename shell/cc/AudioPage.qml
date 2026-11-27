@@ -22,7 +22,7 @@ Column {
     component Section: Text {
         topPadding: 8
         color: Theme.textDim
-        font { family: Theme.font; pixelSize: 12; weight: Font.DemiBold }
+        font { family: Theme.font; pixelSize: 12; styleName: "SemiBold" }
     }
 
     PageHeader { width: parent.width; title: "Sound" }

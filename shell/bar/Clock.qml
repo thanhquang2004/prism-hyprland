@@ -39,6 +39,6 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         text: Qt.formatDateTime(clock.date, hover.hovered ? "ddd, MMM d  ·  HH:mm:ss" : "HH:mm:ss")
         color: Theme.text
-        font { family: Theme.font; pixelSize: 14; weight: Font.DemiBold; features: { "tnum": 1 } }
+        font { family: Theme.font; pixelSize: 14; styleName: "SemiBold"; features: { "tnum": 1 } }
     }
 }

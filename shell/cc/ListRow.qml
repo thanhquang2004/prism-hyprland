@@ -36,7 +36,7 @@ Rectangle {
             text: root.title
             elide: Text.ElideRight
             color: Theme.text
-            font { family: Theme.font; pixelSize: 13; weight: root.selected ? Font.DemiBold : Font.Normal }
+            font { family: Theme.font; pixelSize: 13; styleName: root.selected ? "SemiBold" : "Regular" }
         }
         Text {
             visible: root.subtitle !== ""
