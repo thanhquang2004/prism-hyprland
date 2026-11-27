@@ -287,8 +287,8 @@ Scope {
                                 // Next wallpaper on this screen; right click: every screen
                                 FootButton {
                                     icon: Icons.wallpaper
-                                    onClicked: Wallpaper.next(Cc.screen ? Cc.screen.name : "")
-                                    onRightClicked: Wallpaper.next("")
+                                    onClicked: Wallpaper.shuffle(Cc.screen ? Cc.screen.name : "")
+                                    onRightClicked: Wallpaper.shuffle("")
                                 }
                                 FootButton {
                                     icon: Icons.lock

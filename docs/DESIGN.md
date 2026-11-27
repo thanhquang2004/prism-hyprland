@@ -59,13 +59,12 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 ## 6. Wallpaper
 
-- **Chu kỳ:** tự đổi mỗi ngày (lúc qua ngày mới); nút wallpaper trong control center đổi ngay (chuột phải: mọi màn).
+- **Chu kỳ:** tự đổi mỗi ngày (lúc qua ngày mới). Đổi ngẫu nhiên ngay: `Ctrl+Alt+W` (màn đang focus), `Ctrl+Alt+Shift+W` (mọi màn), lệnh `prism-wall [all|<output>]`, hoặc nút wallpaper trong control center (chuột phải: mọi màn).
 - **Mỗi màn một ảnh khác nhau,** ưu tiên mỗi màn một phong cách, không lặp lại 40 ảnh gần nhất.
 - **Màn dọc DP-1:** bộ ảnh dọc riêng + ảnh ngang được cắt dọc tự động theo vùng nhiều chi tiết nhất.
-- **Phong cách:** abstract/gradient, illustration/anime, kiến trúc/đô thị.
+- **Phong cách:** illustration/anime, kiến trúc/đô thị (đã bỏ gradient tự sinh theo ý bạn).
 - **Màu hệ thống:** lấy từ wallpaper màn chính (eDP-1).
 - **Bộ ảnh** (`~/Pictures/wallpapers/prism/`, nguồn ghi trong `SOURCES.md` ở đó):
-  - `prism-*`: gradient tự sinh (`wallpaper/gen_gradients.py`), 12 ngang + 12 dọc.
   - `ghibli-*`: 31 still chính thức từ ghibli.jp (dùng cá nhân "trong phạm vi lẽ thường").
   - `unsplash-*`: 22 ngang + 20 dọc kiến trúc/đô thị (Unsplash License).
   - `wallhaven-*`: 21 ngang + 5 dọc anime đa dạng (wallhaven.cc, bản quyền không rõ: chỉ dùng cá nhân, không phát tán).

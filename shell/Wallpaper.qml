@@ -90,6 +90,13 @@ Singleton {
         saveState({ day: today(), byOutput: current, recent: recent });
     }
 
+    // Rescan the folders first so added or deleted images count right away
+    property var pending: null           // output for next() once the scan ends ("" = all)
+    function shuffle(output) {
+        pending = output ?? "";
+        if (!crops.running && !scan.running) crops.running = true;
+    }
+
     // New day -> new wallpapers. Same day -> put today's picks back if
     // something else replaced them (e.g. after a reboot).
     function sync() {
@@ -98,7 +105,8 @@ Singleton {
         if (s.day !== today()) { next(""); return; }
         for (const sc of Quickshell.screens) {
             const want = s.byOutput?.[sc.name];
-            if (!want) next(sc.name);
+            const pool = poolFor(sc);
+            if (!want || !pool.includes(want)) next(sc.name);   // none yet, or the file is gone
             else if (byOutput[sc.name] !== want) apply(sc.name, want);
         }
     }
@@ -126,9 +134,15 @@ Singleton {
             acc.portrait = acc.portrait.filter(p => !p.startsWith(root.cropDir) || !own.includes(stem(p))).sort();
             root.pools = acc;
             acc = { landscape: [], portrait: [] };
-            root.poolsReady = true;
-            // Give the first swww query time to land so sync() can compare
-            syncSoon.restart();
+            if (root.pending !== null) {
+                root.poolsReady = true;
+                root.next(root.pending);
+                root.pending = null;
+            } else {
+                root.poolsReady = true;
+                // Give the first swww query time to land so sync() can compare
+                syncSoon.restart();
+            }
         }
     }
     Component.onCompleted: crops.running = true
@@ -140,7 +154,7 @@ Singleton {
         interval: 60000
         running: root.poolsReady
         repeat: true
-        onTriggered: if (root.loadState().day !== root.today()) root.next("")
+        onTriggered: if (root.loadState().day !== root.today()) root.shuffle("")
     }
 
     // ": eDP-1: 1920x1200, scale: 1, currently displaying: image: /path.png"
@@ -170,7 +184,7 @@ Singleton {
 
     IpcHandler {
         target: "wallpaper"
-        function next(output: string): void { root.next(output); }
+        function next(output: string): void { root.shuffle(output); }
         function rescan(): void { crops.running = true; }
         function state(): string {
             return JSON.stringify({ day: root.loadState().day, byOutput: root.byOutput,

@@ -30,5 +30,6 @@ quickshell -p ~/.config/prism/shell
   - `Privacy.qml` + `bar/PrivacyIndicator.qml`: mic / camera / screen-share indicator
   - `cc/`: control center (quick toggles, sliders, Wi-Fi / Bluetooth / Sound pages); `Hypr.qml` sets Hyprland options on 0.56 and 0.57; `Wallpaper.qml` feeds the accent color
   - `Wallpaper.qml`: daily wallpaper per screen from `~/Pictures/wallpapers/prism/{landscape,portrait}` via swww; state in `~/.cache/prism/wallpaper.json` (`quickshell ipc -p ~/.config/prism/shell call wallpaper next [output]`, `rescan`, `state`)
-- `wallpaper/`: `gen_gradients.py` (Prism's own gradients), `crop_portrait.py` (portrait cuts of the landscape set, cached in `~/.cache/prism/wallpaper-portrait`)
+- `wallpaper/crop_portrait.py`: portrait cuts of the landscape set, cached in `~/.cache/prism/wallpaper-portrait`
+- `bin/prism-wall`: random wallpaper now (`prism-wall` = focused screen, `prism-wall all`, `prism-wall DP-1`); linked into `~/.local/bin`, bound to Ctrl+Alt+W / Ctrl+Alt+Shift+W in `~/.config/hypr/UserConfigs/UserKeybinds.conf` and `keybinds.lua`
   - `Icons.qml`: monochrome icon set
