@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
-import Quickshell.Widgets
 import ".."
 
 // Workspaces on this bar's monitor: number plus icons of the apps inside.
@@ -24,11 +23,6 @@ Row {
             Hyprland.dispatch(`hl.dsp.focus({ workspace = ${id} })`);
         else
             Hyprland.dispatch(`workspace ${id}`);
-    }
-
-    function iconFor(appId) {
-        const entry = DesktopEntries.heuristicLookup(appId);
-        return Quickshell.iconPath(entry?.icon ?? appId, "application-x-executable");
     }
 
     Repeater {
@@ -72,12 +66,12 @@ Row {
                 Repeater {
                     model: chip.apps.slice(0, root.maxIcons)
 
-                    IconImage {
+                    Text {
                         required property string modelData
                         anchors.verticalCenter: parent.verticalCenter
-                        implicitSize: 16
-                        source: root.iconFor(modelData)
-                        opacity: chip.current ? 1 : 0.75
+                        text: Icons.app(modelData)
+                        color: chip.current ? Theme.text : Theme.textDim
+                        font { family: Theme.iconFont; pixelSize: 15 }
                     }
                 }
 

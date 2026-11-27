@@ -1,39 +1,57 @@
 import QtQuick
+import QtQuick.Effects
 import Quickshell
 import Quickshell.Services.SystemTray
 import Quickshell.Widgets
 import ".."
 
-// System tray icons. Left click activates, right click opens the app's menu.
+// System tray icons, flattened to the ink color so they match the
+// monochrome set. Left click activates, right click opens the app's menu.
 Row {
     id: root
 
     property var window: null
 
-    spacing: 8
+    spacing: 10
 
     Repeater {
         model: SystemTray.items
 
-        IconImage {
-            id: icon
+        Item {
+            id: slot
             required property var modelData
 
-            implicitSize: 16
-            source: modelData.icon
-            opacity: hover.hovered ? 1 : 0.85
+            width: 16
+            height: 16
+            opacity: hover.hovered ? 1 : 0.8
+
+            IconImage {
+                id: icon
+                anchors.fill: parent
+                source: slot.modelData.icon
+                visible: false
+            }
+
+            // Silhouette: push every opaque pixel to white, then tint.
+            MultiEffect {
+                anchors.fill: parent
+                source: icon
+                brightness: 1.0
+                colorization: 1.0
+                colorizationColor: Theme.text
+            }
 
             HoverHandler { id: hover; cursorShape: Qt.PointingHandCursor }
             TapHandler {
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onTapped: (point, button) => {
-                    if (button === Qt.RightButton || icon.modelData.onlyMenu) {
-                        if (icon.modelData.hasMenu && root.window) {
-                            const p = icon.mapToItem(null, 0, icon.height + 10);
-                            icon.modelData.display(root.window, p.x, p.y);
+                    if (button === Qt.RightButton || slot.modelData.onlyMenu) {
+                        if (slot.modelData.hasMenu && root.window) {
+                            const p = slot.mapToItem(null, 0, slot.height + 10);
+                            slot.modelData.display(root.window, p.x, p.y);
                         }
                     } else {
-                        icon.modelData.activate();
+                        slot.modelData.activate();
                     }
                 }
             }

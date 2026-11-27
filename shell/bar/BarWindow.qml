@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Wayland
 import ".."
+import "../power"
 
 // Floating glass bar for one screen. The layer surface spans the top
 // strip; only the bar itself takes input (mask) and gets blurred
@@ -62,6 +63,14 @@ PanelWindow {
             Status {
                 anchors.verticalCenter: parent.verticalCenter
                 compact: win.formFactor === "portrait"
+            }
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                text: Icons.shutdown
+                color: powerHover.hovered ? Theme.text : Theme.textDim
+                font { family: Theme.iconFont; pixelSize: 15 }
+                HoverHandler { id: powerHover; cursorShape: Qt.PointingHandCursor }
+                TapHandler { onTapped: Power.toggle() }
             }
         }
     }

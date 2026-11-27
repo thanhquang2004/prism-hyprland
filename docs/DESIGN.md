@@ -6,10 +6,11 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 | Mục | Quyết định |
 |---|---|
-| Chất liệu | Kính mờ nhẹ: nền ~70–80%, blur vừa, chữ luôn dễ đọc |
-| Màu | Tự sinh từ wallpaper (wallust) |
-| Sáng/tối | Đi theo night light: bật hyprsunset → tối, tắt → sáng |
-| Font | Sans hiện đại (Inter / Geist), icon Nerd Font |
+| Chất liệu | Kính mờ: tối = "Smoke" (kính khói, chữ trắng), sáng = "Milky" (kính sữa, chữ tối) |
+| Màu | Một màu mực duy nhất cho chữ và icon; màu nhấn từ wallpaper (wallust) để sau |
+| Sáng/tối | Đi theo night light (`~/.cache/.hyprsunset_state`): bật → Smoke, tắt → Milky |
+| Font | Inter; icon đơn sắc Material Design Icons (Nerd Font), tray được làm phẳng về cùng màu mực |
+| Power menu | Toàn màn hình trên màn đang focus, phím L/E/S/R/P, mũi tên + Enter; Đăng xuất / Khởi động lại / Tắt máy đếm ngược 5 giây, Esc để hủy |
 | Ngôn ngữ | Tiếng Anh, giờ 24h (`Fri, Nov 27 · 14:30`) |
 
 ## 2. Bar (đổi từ island, 27/11)
