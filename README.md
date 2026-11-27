@@ -1,19 +1,19 @@
 # Prism
 
-Personal Hyprland desktop: frosted glass, one island per screen, no bar.
+Personal Hyprland desktop: frosted glass, one floating bar per screen, no bar.
 Design brief: see `docs/DESIGN.md`.
 
 ## Run (testing alongside the current setup)
 
 ```sh
-hyprctl keyword layerrule "match:namespace prism-island, blur on"
-hyprctl keyword layerrule "match:namespace prism-island, ignore_alpha 0.1"
+hyprctl keyword layerrule "match:namespace prism-bar, blur on"
+hyprctl keyword layerrule "match:namespace prism-bar, ignore_alpha 0.1"
 quickshell -p ~/.config/prism/shell
 ```
 
 ## Layout
 
 - `shell/`: Quickshell (QML) UI
-  - `shell.qml`: entry point, one island per screen
+  - `shell.qml`: entry point, one floating bar per screen
   - `Theme.qml`: design tokens (colors, type, motion)
-  - `island/`: the island and its parts
+  - `bar/`: the bar and its modules

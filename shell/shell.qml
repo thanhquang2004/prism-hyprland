@@ -1,14 +1,14 @@
 import QtQuick
 import Quickshell
-import "island"
+import "bar"
 
-// Prism: one island per screen. Each island reads its own screen's
+// Prism: one floating bar per screen. Each bar reads its own screen's
 // geometry, so new or rotated monitors adapt without config changes.
 ShellRoot {
     Variants {
         model: Quickshell.screens
 
-        IslandWindow {
+        BarWindow {
             required property var modelData
             screen: modelData
         }

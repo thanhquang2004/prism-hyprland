@@ -12,25 +12,23 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 | Font | Sans hiện đại (Inter / Geist), icon Nerd Font |
 | Ngôn ngữ | Tiếng Anh, giờ 24h (`Fri, Nov 27 · 14:30`) |
 
-## 2. Island (thành phần trung tâm, duy nhất thường trực)
+## 2. Bar (đổi từ island, 27/11)
 
-- **Không có bar.** Mỗi màn hình chỉ có một island ở giữa phía trên, kích thước theo tỉ lệ và hướng màn (ngang / dọc).
-- **Thu gọn:** đồng hồ; khi có nhạc thì thêm sóng âm nhỏ và tên bài.
-- **Hover:** tray (Discord, Telegram, nm-applet…) xổ ra cạnh phải island.
-- **Tự nở ra khi có:**
-  - Âm lượng / độ sáng (thay OSD)
-  - Thông báo mới (hiện ngắn, sau đó vào swaync)
-  - Nhạc: ảnh bìa, phát/dừng, thanh tiến độ
-  - Trạng thái hệ thống: pin yếu, đang sạc, đổi layout bàn phím
-  - Họp: chấm mic/camera luôn hiện khi đang dùng; báo "đang chia sẻ màn hình/workspace" kèm nút dừng
-- **Workspace:** không thường trực. Chỉ hiện khi chuyển workspace (số + icon app trong mỗi workspace), tự biến mất sau vài giây.
-- **Fullscreen / game:** island ẩn, nhưng vẫn nở ra khi có sự kiện (âm lượng, thông báo quan trọng).
+- **Hình dáng:** một thanh kính Frost nổi, bo tròn hai đầu, cách mép màn hình 8px. Chỉ có viền mảnh, không có vệt sáng.
+- **Mỗi màn một bar**, bố cục theo tỉ lệ và hướng màn hình. Màn dọc thì gọn: ẩn tray và các nhãn số, mỗi workspace chỉ hiện 1 icon.
+- **Trái:** workspace của màn đó, luôn hiện (số + icon app), bấm để chuyển.
+- **Giữa:** đồng hồ; khi có nhạc thì thêm sóng âm và tên bài; rê chuột vào thì hiện ngày.
+- **Phải:** tray (chuột trái kích hoạt, chuột phải mở menu), mạng, âm lượng, pin.
+- **Sự kiện** (trước đây do island nở ra), dự kiến:
+  - Âm lượng/độ sáng và thông báo ngắn: popup kính nhỏ ngay dưới giữa bar
+  - Họp: chấm mic/camera và "đang chia sẻ" nằm ở cụm phải của bar
+- **Fullscreen / game:** bar ẩn, popup sự kiện vẫn hiện.
 
 ## 3. Control center
 
-- **Kiểu:** chính island biến hình, nở to thành control center.
+- **Kiểu:** panel kính thả xuống từ cụm phải của bar.
 - **Mở trên:** màn hình đang focus.
-- **Cách mở:** bấm vào island, phím tắt (SUPER+SHIFT+E), vuốt touchpad xuống.
+- **Cách mở:** bấm vào cụm trạng thái bên phải, phím tắt (SUPER+SHIFT+E), vuốt touchpad xuống.
 - **Nội dung:**
   - Kết nối: wifi (chọn mạng), bluetooth (kết nối thiết bị), VPN, chế độ máy bay
   - Âm thanh: âm lượng, mic, chọn thiết bị ra/vào, âm lượng từng app
@@ -74,9 +72,9 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 ## 8. Lộ trình
 
-1. Repo `~/.config/prism` (git). Dựng island cho 3 màn trên 0.56, chạy song song waybar.
-2. Các trạng thái nở của island + workspace tạm thời + tray.
-3. Control center (island biến hình) + hệ màu wallust + sáng/tối theo night light.
+1. Repo `~/.config/prism` (git). Bar cho 3 màn trên 0.56, chạy song song waybar.
+2. Popup sự kiện (OSD, thông báo), chỉ báo họp, ẩn khi fullscreen.
+3. Control center (thả xuống từ bar) + hệ màu wallust + sáng/tối theo night light.
 4. Wallpaper: bộ ảnh, đổi hằng tuần theo từng màn.
 5. hyprlock + hypridle.
 6. Lên 0.57: `hyprland.lua` hoàn chỉnh, wobble, tắt waybar/JaKooLit (giữ bản sao lưu).
