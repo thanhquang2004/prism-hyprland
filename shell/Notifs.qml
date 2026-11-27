@@ -16,6 +16,7 @@ Singleton {
     property var panelScreen: null
     property var popups: []              // newest first, at most maxPopups
     property var times: ({})             // notification id -> arrival time (ms)
+    property var expanded: ({})          // group key -> expanded, kept across panel reopen
     readonly property int maxPopups: 3
 
     // Newest first
@@ -54,6 +55,8 @@ Singleton {
             popups = [];
         }
     }
+
+    function toggleGroup(key) { expanded = Object.assign({}, expanded, { [key]: !expanded[key] }); }
 
     function dropPopup(n) { popups = popups.filter(p => p !== n); }
     function dismiss(n) { dropPopup(n); n.dismiss(); }
@@ -95,5 +98,6 @@ Singleton {
         function toggle(): void { root.togglePanel(null); }
         function toggleDnd(): void { root.dnd = !root.dnd; }
         function clear(): void { root.clearAll(); }
+        function toggleGroup(key: string): void { root.toggleGroup(key); }
     }
 }

@@ -77,4 +77,5 @@ Singleton {
     // Motion
     readonly property int animFast: 160
     readonly property int animMed: 240
+    readonly property int animSlow: 300
 }

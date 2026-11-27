@@ -42,7 +42,6 @@ Singleton {
     readonly property string bellOff: "\u{F009B}"
     readonly property string close: "\u{F0156}"
     readonly property string chevronDown: "\u{F0140}"
-    readonly property string chevronUp: "\u{F0143}"
 
     // Theme
     readonly property string sun: "\u{F0599}"

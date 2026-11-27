@@ -20,7 +20,8 @@ Scope {
             exclusionMode: ExclusionMode.Normal
             exclusiveZone: 0
             implicitWidth: 440
-            implicitHeight: stack.implicitHeight
+            // Fixed-size surface (see NotifCenter); the mask keeps the rest click-through
+            implicitHeight: (screen ? screen.height : 1080) * 0.75
             color: "transparent"
 
             WlrLayershell.namespace: "prism-notifs"

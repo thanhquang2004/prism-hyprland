@@ -21,8 +21,11 @@ Scope {
             exclusionMode: ExclusionMode.Normal
             exclusiveZone: 0                      // sit below the bars, reserve nothing
             implicitWidth: portrait ? 420 : 470
-            implicitHeight: Math.min(panel.implicitHeight, (screen ? screen.height : 1080) * 0.75)
+            // Fixed-size surface: resizing a layer surface every frame stutters, so the
+            // window stays at max height and only the glass panel inside animates.
+            implicitHeight: (screen ? screen.height : 1080) * 0.75
             color: "transparent"
+            mask: Region { item: panel }
 
             WlrLayershell.namespace: "prism-notifs"
             WlrLayershell.layer: WlrLayer.Overlay
@@ -36,9 +39,19 @@ Scope {
 
             Rectangle {
                 id: panel
-                anchors.fill: parent
+                width: parent.width
                 implicitHeight: body.y + body.implicitHeight + 14
+                // Follows content frame by frame (groups animate their own height)
+                height: Math.min(implicitHeight, win.implicitHeight)
+                clip: true
                 radius: 26
+
+                // Drop in on open
+                opacity: 0
+                y: -12
+                Component.onCompleted: { opacity = 1; y = 0; }
+                Behavior on opacity { NumberAnimation { duration: Theme.animMed; easing.type: Easing.OutCubic } }
+                Behavior on y { NumberAnimation { duration: Theme.animMed; easing.type: Easing.OutCubic } }
                 color: Theme.glass
                 border.width: 1
                 border.color: Theme.edge

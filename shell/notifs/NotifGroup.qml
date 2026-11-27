@@ -7,7 +7,7 @@ Column {
     id: root
 
     required property var group
-    property bool expanded: false
+    readonly property bool expanded: !!Notifs.expanded[group.key]
     readonly property int extra: group.items.length - 1
 
     spacing: 8
@@ -51,11 +51,13 @@ Column {
 
             Text {
                 visible: root.extra > 0
-                text: root.expanded ? Icons.chevronUp : Icons.chevronDown
+                text: Icons.chevronDown
+                rotation: root.expanded ? 180 : 0
                 color: expandHover.hovered ? Theme.text : Theme.textDim
                 font { family: Theme.iconFont; pixelSize: 18 }
+                Behavior on rotation { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
                 HoverHandler { id: expandHover; cursorShape: Qt.PointingHandCursor }
-                TapHandler { onTapped: root.expanded = !root.expanded }
+                TapHandler { onTapped: Notifs.toggleGroup(root.group.key) }
             }
             Text {
                 text: Icons.close
@@ -69,20 +71,28 @@ Column {
         }
     }
 
+    // Every card is always laid out; expanding just grows this clipped
+    // viewport, so the motion is one continuous height animation.
     Item {
+        id: viewport
         width: parent.width
-        height: cards.height + (stackEdge.visible ? 6 : 0)
+        clip: true
+
+        readonly property real firstHeight: rep.count > 0 && rep.itemAt(0) ? rep.itemAt(0).height : 0
+        readonly property real collapsedHeight: firstHeight + (root.extra > 0 ? 8 : 0)
+        height: root.expanded ? cards.implicitHeight : collapsedHeight
+        Behavior on height { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
 
         // A sliver of the next card peeking out under the newest one
         Rectangle {
-            id: stackEdge
-            visible: !root.expanded && root.extra > 0
             x: 10
             width: parent.width - 20
-            y: cards.height - 10
+            y: viewport.firstHeight - 10
             height: 18
             radius: 14
             color: Theme.chip
+            opacity: !root.expanded && root.extra > 0 ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: Theme.animFast } }
         }
 
         Column {
@@ -91,12 +101,16 @@ Column {
             spacing: 8
 
             Repeater {
-                model: root.expanded ? root.group.items : root.group.items.slice(0, 1)
+                id: rep
+                model: root.group.items
 
                 NotifCard {
                     required property var modelData
+                    required property int index
                     width: cards.width
                     notif: modelData
+                    opacity: index === 0 || root.expanded ? 1 : 0
+                    Behavior on opacity { NumberAnimation { duration: Theme.animSlow; easing.type: Easing.OutCubic } }
                 }
             }
         }
