@@ -91,4 +91,5 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 3. ✅ Control center (thả xuống từ cụm trạng thái) + màu nhấn từ wallpaper (27/11). Chưa có: vuốt touchpad (làm ở bước 0.57).
 4. ✅ Wallpaper: bộ ảnh riêng, đổi mỗi ngày, mỗi màn một ảnh, màn dọc có ảnh cắt (27/11).
 5. ✅ hyprlock + hypridle (27/11).
-6. Lên 0.57: `hyprland.lua` hoàn chỉnh, wobble, tắt waybar/JaKooLit (giữ bản sao lưu).
+6. ✅ Lên 0.57 (27/11): `hyprland.lua` (repo `hypr/`, symlink vào `~/.config/hypr`), wobble, vuốt 3 ngón xuống mở control center, waybar/swaync tắt hẳn; quay lại 0.56: `~/.local/share/prism-rollback/rollback-to-0.56.sh`.
+7. ✅ Màn đăng nhập SDDM `prism` (`sddm/`): cùng HUD cyberpunk của màn khóa; cài bằng `sddm/install.sh` (`--revert` để quay về theme cũ).

@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=Prism
+Description=Prism login: the cyberpunk security-lock HUD of the Prism lock screen
+Author=Prism
+License=MIT
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=prism
+Theme-API=2.0
+QtVersion=6
