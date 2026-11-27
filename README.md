@@ -1,6 +1,6 @@
 # Prism
 
-Personal Hyprland desktop: frosted glass, one floating bar per screen, no bar.
+Personal Hyprland desktop: frosted glass, one floating bar per screen.
 Design brief: see `docs/DESIGN.md`.
 
 ## Run (testing alongside the current setup)
