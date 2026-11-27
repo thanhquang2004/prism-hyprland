@@ -7,7 +7,9 @@ import Quickshell.Io
 // Design tokens for Prism. Two glass modes:
 //   dark  = "Smoke" (smoky dark glass, white text)
 //   light = "Milky" (milky light glass, dark text)
-// The mode follows night light: hyprsunset on -> dark, off -> light.
+// The mode follows night light (hyprsunset on -> dark, off -> light) unless
+// toggled by hand from the bar; the manual choice lasts until night light
+// changes again.
 Singleton {
     id: root
 
@@ -16,9 +18,36 @@ Singleton {
         id: nightLight
         path: Quickshell.env("HOME") + "/.cache/.hyprsunset_state"
         watchChanges: true
-        onFileChanged: reload()
+        onFileChanged: {
+            reload();
+            root.setManual("");
+        }
     }
-    readonly property bool dark: nightLight.text().trim() === "on"
+
+    // Manual override: "", "dark" or "light"
+    FileView {
+        id: manualFile
+        path: Quickshell.env("HOME") + "/.cache/prism/theme"
+        printErrors: false
+    }
+    readonly property string manual: manualFile.text().trim()
+    readonly property bool nightOn: nightLight.text().trim() === "on"
+    readonly property bool dark: manual !== "" ? manual === "dark" : nightOn
+
+    function setManual(mode) {
+        if (manual !== mode) manualFile.setText(mode);
+    }
+    IpcHandler {
+        target: "theme"
+        function toggle(): void { root.toggleDark(); }
+        function mode(): string { return root.dark ? "dark" : "light"; }
+    }
+
+    function toggleDark() {
+        const next = dark ? "light" : "dark";
+        // Back to following night light if that already gives the wanted mode
+        setManual((next === "dark") === nightOn ? "" : next);
+    }
 
     // Glass. Keep alpha above the layer's ignore_alpha (0.1) or Hyprland skips the blur.
     readonly property color glass: dark ? Qt.rgba(0.06, 0.07, 0.09, 0.48) : Qt.rgba(0.97, 0.97, 0.99, 0.62)

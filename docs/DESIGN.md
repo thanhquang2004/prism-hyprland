@@ -19,7 +19,7 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 - **Mỗi màn một bar**, bố cục theo tỉ lệ và hướng màn hình. Màn dọc thì gọn: ẩn tray và các nhãn số, mỗi workspace chỉ hiện 1 icon.
 - **Trái:** chuông thông báo (số chưa đọc; chuột trái mở bảng, chuột phải bật/tắt Không làm phiền), sau đó là workspace của màn đó (số + icon app), bấm để chuyển.
 - **Giữa:** đồng hồ có giây (`HH:mm:ss`); khi có nhạc thì thêm sóng âm và tên bài; rê chuột vào thì hiện ngày.
-- **Phải:** tray (chuột trái kích hoạt, chuột phải mở menu), mạng, âm lượng, pin, nút ⏻ mở power menu.
+- **Phải:** tray (chuột trái kích hoạt, chuột phải mở menu), mạng, âm lượng, pin, nút sáng/tối (☀/☾: đổi tay, giữ đến khi night light đổi lại), nút ⏻ mở power menu.
 - **Thông báo (Prism tự làm, thay swaync):** bảng kính thả xuống dưới chuông, gộp theo app (bấm mũi tên để mở nhóm), nút hành động của thông báo, bấm vào thông báo để mở app, Clear all, Không làm phiền. Popup thông báo mới hiện dưới chuông ~5 giây (giữ chuột thì không tự ẩn; Critical thì ở lại).
 - **Sự kiện** (trước đây do island nở ra), dự kiến:
   - Âm lượng/độ sáng và thông báo ngắn: popup kính nhỏ ngay dưới giữa bar

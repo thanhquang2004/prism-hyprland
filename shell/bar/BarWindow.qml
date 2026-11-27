@@ -75,6 +75,14 @@ PanelWindow {
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
+                text: Theme.dark ? Icons.moon : Icons.sun
+                color: modeHover.hovered ? Theme.text : Theme.textDim
+                font { family: Theme.iconFont; pixelSize: 15 }
+                HoverHandler { id: modeHover; cursorShape: Qt.PointingHandCursor }
+                TapHandler { onTapped: Theme.toggleDark() }
+            }
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
                 text: Icons.shutdown
                 color: powerHover.hovered ? Theme.text : Theme.textDim
                 font { family: Theme.iconFont; pixelSize: 15 }

@@ -16,8 +16,8 @@ Rectangle {
     readonly property bool critical: notif && notif.urgency === NotificationUrgency.Critical
     readonly property var buttons: notif ? notif.actions.filter(a => a.identifier !== "default" && a.text) : []
 
-    implicitHeight: body.implicitHeight + 24
-    radius: 16
+    implicitHeight: body.implicitHeight + 30
+    radius: 20
     color: popup ? Theme.glass : (hover.hovered ? Theme.chipHover : Theme.chip)
     border.width: popup || critical ? 1 : 0
     border.color: critical ? Theme.warn : Theme.edge
@@ -37,17 +37,17 @@ Rectangle {
 
     Row {
         id: body
-        x: 12
-        y: 12
-        width: parent.width - 24
-        spacing: 12
+        x: 15
+        y: 15
+        width: parent.width - 30
+        spacing: 14
 
         ClippingRectangle {
             id: image
             visible: img.status === Image.Ready
-            width: visible ? 40 : 0
-            height: 40
-            radius: 12
+            width: visible ? 48 : 0
+            height: 48
+            radius: 14
             color: "transparent"
 
             Image {
@@ -55,13 +55,13 @@ Rectangle {
                 anchors.fill: parent
                 source: root.notif && root.notif.image ? root.notif.image : ""
                 fillMode: Image.PreserveAspectCrop
-                sourceSize: Qt.size(80, 80)
+                sourceSize: Qt.size(96, 96)
             }
         }
 
         Column {
             width: parent.width - (image.visible ? image.width + parent.spacing : 0)
-            spacing: 3
+            spacing: 4
 
             Row {
                 width: parent.width
@@ -71,22 +71,22 @@ Rectangle {
                     visible: root.showApp
                     text: Icons.app(root.notif ? (root.notif.desktopEntry || root.notif.appName) : "")
                     color: Theme.textDim
-                    font { family: Theme.iconFont; pixelSize: 13 }
+                    font { family: Theme.iconFont; pixelSize: 15 }
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Text {
-                    width: parent.width - time.width - closeBtn.width - 16 - (root.showApp ? 21 : 0)
+                    width: parent.width - time.width - closeBtn.width - 16 - (root.showApp ? 23 : 0)
                     text: root.notif ? root.notif.summary : ""
                     elide: Text.ElideRight
                     color: Theme.text
-                    font { family: Theme.font; pixelSize: 13; weight: Font.DemiBold }
+                    font { family: Theme.font; pixelSize: 15; weight: Font.DemiBold }
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Text {
                     id: time
                     text: root.notif ? root.ago(Notifs.timeOf(root.notif)) : ""
                     color: Theme.textFaint
-                    font { family: Theme.font; pixelSize: 11 }
+                    font { family: Theme.font; pixelSize: 12 }
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Text {
@@ -94,7 +94,7 @@ Rectangle {
                     text: Icons.close
                     opacity: hover.hovered ? 1 : 0
                     color: closeHover.hovered ? Theme.text : Theme.textDim
-                    font { family: Theme.iconFont; pixelSize: 13 }
+                    font { family: Theme.iconFont; pixelSize: 15 }
                     anchors.verticalCenter: parent.verticalCenter
                     Behavior on opacity { NumberAnimation { duration: Theme.animFast } }
                     HoverHandler { id: closeHover; cursorShape: Qt.PointingHandCursor }
@@ -108,17 +108,17 @@ Rectangle {
                 text: root.notif ? root.notif.body : ""
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
-                maximumLineCount: root.popup ? 2 : 4
+                maximumLineCount: root.popup ? 3 : 5
                 elide: Text.ElideRight
                 color: Theme.textDim
-                font { family: Theme.font; pixelSize: 12 }
-                lineHeight: 1.15
+                font { family: Theme.font; pixelSize: 14 }
+                lineHeight: 1.18
             }
 
             Row {
                 visible: root.buttons.length > 0
-                topPadding: 6
-                spacing: 6
+                topPadding: 8
+                spacing: 8
 
                 Repeater {
                     model: root.buttons
@@ -126,9 +126,9 @@ Rectangle {
                     Rectangle {
                         id: btn
                         required property var modelData
-                        height: 26
-                        width: label.implicitWidth + 22
-                        radius: 13
+                        height: 32
+                        width: label.implicitWidth + 26
+                        radius: 16
                         color: btnHover.hovered ? Theme.chipActive : Theme.chipHover
 
                         Text {
@@ -136,7 +136,7 @@ Rectangle {
                             anchors.centerIn: parent
                             text: btn.modelData.text
                             color: Theme.text
-                            font { family: Theme.font; pixelSize: 12; weight: Font.Medium }
+                            font { family: Theme.font; pixelSize: 13; weight: Font.Medium }
                         }
                         HoverHandler { id: btnHover; cursorShape: Qt.PointingHandCursor }
                         TapHandler {

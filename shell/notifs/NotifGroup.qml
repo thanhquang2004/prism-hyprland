@@ -10,12 +10,12 @@ Column {
     property bool expanded: false
     readonly property int extra: group.items.length - 1
 
-    spacing: 6
+    spacing: 8
 
     // Header: app glyph, name, count, expand and clear-group buttons
     Item {
         width: parent.width
-        height: 22
+        height: 26
 
         HoverHandler { id: headHover }
 
@@ -27,20 +27,20 @@ Column {
             Text {
                 text: Icons.app(root.group.key)
                 color: Theme.textDim
-                font { family: Theme.iconFont; pixelSize: 13 }
+                font { family: Theme.iconFont; pixelSize: 15 }
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 text: root.group.app
                 color: Theme.textDim
-                font { family: Theme.font; pixelSize: 12; weight: Font.DemiBold }
+                font { family: Theme.font; pixelSize: 14; weight: Font.DemiBold }
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 visible: root.extra > 0
                 text: root.group.items.length
                 color: Theme.textFaint
-                font { family: Theme.font; pixelSize: 11; features: { "tnum": 1 } }
+                font { family: Theme.font; pixelSize: 12; features: { "tnum": 1 } }
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -53,7 +53,7 @@ Column {
                 visible: root.extra > 0
                 text: root.expanded ? Icons.chevronUp : Icons.chevronDown
                 color: expandHover.hovered ? Theme.text : Theme.textDim
-                font { family: Theme.iconFont; pixelSize: 15 }
+                font { family: Theme.iconFont; pixelSize: 18 }
                 HoverHandler { id: expandHover; cursorShape: Qt.PointingHandCursor }
                 TapHandler { onTapped: root.expanded = !root.expanded }
             }
@@ -61,7 +61,7 @@ Column {
                 text: Icons.close
                 opacity: headHover.hovered ? 1 : 0
                 color: clearHover.hovered ? Theme.text : Theme.textDim
-                font { family: Theme.iconFont; pixelSize: 13 }
+                font { family: Theme.iconFont; pixelSize: 15 }
                 Behavior on opacity { NumberAnimation { duration: Theme.animFast } }
                 HoverHandler { id: clearHover; cursorShape: Qt.PointingHandCursor }
                 TapHandler { onTapped: Notifs.dismissGroup(root.group.key) }
@@ -80,15 +80,15 @@ Column {
             x: 10
             width: parent.width - 20
             y: cards.height - 10
-            height: 16
-            radius: 12
+            height: 18
+            radius: 14
             color: Theme.chip
         }
 
         Column {
             id: cards
             width: parent.width
-            spacing: 6
+            spacing: 8
 
             Repeater {
                 model: root.expanded ? root.group.items : root.group.items.slice(0, 1)

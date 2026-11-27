@@ -20,7 +20,7 @@ Scope {
             margins { top: 6; left: Theme.barGap + 2 }
             exclusionMode: ExclusionMode.Normal
             exclusiveZone: 0                      // sit below the bars, reserve nothing
-            implicitWidth: portrait ? 360 : 400
+            implicitWidth: portrait ? 420 : 470
             implicitHeight: Math.min(panel.implicitHeight, (screen ? screen.height : 1080) * 0.75)
             color: "transparent"
 
@@ -37,8 +37,8 @@ Scope {
             Rectangle {
                 id: panel
                 anchors.fill: parent
-                implicitHeight: body.y + body.implicitHeight + 12
-                radius: 22
+                implicitHeight: body.y + body.implicitHeight + 14
+                radius: 26
                 color: Theme.glass
                 border.width: 1
                 border.color: Theme.edge
@@ -48,16 +48,16 @@ Scope {
                 // Header: title, do-not-disturb, clear all
                 Item {
                     id: header
-                    x: 16
-                    y: 14
-                    width: parent.width - 32
-                    height: 28
+                    x: 20
+                    y: 18
+                    width: parent.width - 40
+                    height: 32
 
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Notifications"
                         color: Theme.text
-                        font { family: Theme.font; pixelSize: 15; weight: Font.Bold }
+                        font { family: Theme.font; pixelSize: 18; weight: Font.Bold }
                     }
 
                     Row {
@@ -65,9 +65,9 @@ Scope {
                         spacing: 6
 
                         Rectangle {
-                            height: 26
-                            width: dndRow.implicitWidth + 18
-                            radius: 13
+                            height: 30
+                            width: dndRow.implicitWidth + 22
+                            radius: 15
                             color: Notifs.dnd ? Theme.chipActive : (dndHover.hovered ? Theme.chipHover : Theme.chip)
                             Row {
                                 id: dndRow
@@ -76,7 +76,7 @@ Scope {
                                 Text {
                                     text: Icons.bellOff
                                     color: Theme.text
-                                    font { family: Theme.iconFont; pixelSize: 13 }
+                                    font { family: Theme.iconFont; pixelSize: 15 }
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
                                 Text {
@@ -92,9 +92,9 @@ Scope {
 
                         Rectangle {
                             visible: Notifs.count > 0
-                            height: 26
-                            width: clearText.implicitWidth + 18
-                            radius: 13
+                            height: 30
+                            width: clearText.implicitWidth + 22
+                            radius: 15
                             color: clearHover.hovered ? Theme.chipHover : Theme.chip
                             Text {
                                 id: clearText
@@ -111,10 +111,10 @@ Scope {
 
                 Flickable {
                     id: body
-                    x: 12
-                    y: header.y + header.height + 12
-                    width: parent.width - 24
-                    height: parent.height - y - 12
+                    x: 14
+                    y: header.y + header.height + 14
+                    width: parent.width - 28
+                    height: parent.height - y - 14
                     implicitHeight: Notifs.count > 0 ? list.implicitHeight : empty.implicitHeight
                     contentHeight: list.implicitHeight
                     clip: true
@@ -123,7 +123,7 @@ Scope {
                     Column {
                         id: list
                         width: body.width
-                        spacing: 14
+                        spacing: 16
                         visible: Notifs.count > 0
 
                         Repeater {
@@ -149,13 +149,13 @@ Scope {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: Icons.bellNone
                             color: Theme.textFaint
-                            font { family: Theme.iconFont; pixelSize: 30 }
+                            font { family: Theme.iconFont; pixelSize: 36 }
                         }
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: "No notifications"
                             color: Theme.textFaint
-                            font { family: Theme.font; pixelSize: 13 }
+                            font { family: Theme.font; pixelSize: 15 }
                         }
                     }
                 }

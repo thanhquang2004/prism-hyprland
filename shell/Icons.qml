@@ -44,6 +44,10 @@ Singleton {
     readonly property string chevronDown: "\u{F0140}"
     readonly property string chevronUp: "\u{F0143}"
 
+    // Theme
+    readonly property string sun: "\u{F0599}"
+    readonly property string moon: "\u{F0594}"
+
     // Power menu
     readonly property string lock: "\u{F033E}"
     readonly property string logout: "\u{F0343}"

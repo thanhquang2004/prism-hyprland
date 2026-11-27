@@ -19,7 +19,7 @@ Scope {
             margins { top: 6; left: Theme.barGap + 2 }
             exclusionMode: ExclusionMode.Normal
             exclusiveZone: 0
-            implicitWidth: 380
+            implicitWidth: 440
             implicitHeight: stack.implicitHeight
             color: "transparent"
 
@@ -31,7 +31,7 @@ Scope {
             Column {
                 id: stack
                 width: parent.width
-                spacing: 8
+                spacing: 10
 
                 Repeater {
                     model: Notifs.popups
