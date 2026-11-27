@@ -56,6 +56,11 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
   - Gõ mật khẩu: mỗi ký tự một chấm màu quang phổ nảy lên; đang kiểm tra: chấm gợn sóng + chấm quay quanh avatar.
   - Sai: ô rung + tách màu đỏ/xanh; thông báo của PAM (vd. bị faillock) hiện bên dưới.
   - Mở: nội dung rơi xuống, tia sáng quét ngược trả lại desktop.
+- **Theme cyberpunk** (`lock/qml/cyber`, mặc định; đổi trong `lock/theme` hoặc `prism-lock --theme prism|cyberpunk`): HUD tối, một màu neon vàng, cyan rất ít, đỏ chỉ cho lỗi; font JetBrains Mono.
+  - Vào: desktop glitch (cắt lát lệch ngang + vệt màu) → tắt kiểu CRT thành một đường → đường neon mở ra HUD → tia quét vẽ HUD từ trên xuống, mọi nhãn tự "giải mã".
+  - Chờ: đồng hồ thỉnh thoảng glitch tách RGB, dải sáng mờ trôi xuống, vạch giây chạy trên thước, uptime đếm.
+  - Gõ: mỗi ký tự là katakana/ký hiệu nhấp nháy rồi thành khối vàng, khung sáng lên, mã hex đổi theo; con trỏ khối nhấp nháy.
+  - Kiểm tra: khung cyan, thanh đoạn chạy. Sai: khung đỏ, rung, tách RGB, `ACCESS DENIED // <lý do>`. Đúng: `ACCESS GRANTED`, HUD tắt kiểu CRT, desktop bật lại.
 - **Mỗi màn đều đầy đủ,** bố cục theo tỉ lệ: màn ngang thẻ nhạc góc trái dưới + chip góc phải dưới; màn dọc xếp giữa.
 - **Xem thử không cần mật khẩu:** `prism-lock --preview`, mở bằng `quickshell ipc -p ~/.config/prism/lock/qml call lock testUnlock` (chế độ này không gọi PAM nên không bao giờ tính là đăng nhập sai).
 - **Idle (hypridle):** tối màn ở phút 14, khóa ở phút 15, tắt màn ở phút 30; khóa trước khi suspend.

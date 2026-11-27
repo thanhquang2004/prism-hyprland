@@ -8,7 +8,8 @@ a few seconds, or crashes while locked, falls back to hyprlock with a
 generated config (~/.cache/prism/hyprlock.conf) so the screen always ends
 up locked. Does nothing if a lock is already running.
 
-    prism-lock             lock
+    prism-lock             lock, in the theme named in ~/.config/prism/lock/theme
+    prism-lock --theme T   lock in theme T: prism | cyberpunk
     prism-lock --preview   Prism lock in preview mode: no PAM, unlock with
                            `quickshell ipc -p ~/.config/prism/lock/qml call lock testUnlock`
     prism-lock --hyprlock  use the hyprlock fallback directly
@@ -213,7 +214,17 @@ def snapshot():
         outputs[name] = {"shot": str(shot), "wall": walls.get(name, "")}
     for p in procs:
         p.wait()
-    (LOCKDIR / "session.json").write_text(json.dumps({"user": display_name(), "accent": accent(), "outputs": outputs}))
+    (LOCKDIR / "session.json").write_text(json.dumps({"user": display_name(), "accent": accent(),
+                                                      "theme": theme(), "outputs": outputs}))
+
+
+def theme():
+    if "--theme" in sys.argv[:-1]:
+        return sys.argv[sys.argv.index("--theme") + 1]
+    try:
+        return (HERE / "theme").read_text().strip() or "prism"
+    except OSError:
+        return "prism"
 
 
 def cleanup():
