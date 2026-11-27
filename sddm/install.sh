@@ -22,4 +22,14 @@ if grep -q '^Current=' "$conf"; then
 else
     printf '\n[Theme]\nCurrent=prism\n' | sudo tee -a "$conf" >/dev/null
 fi
+# The theme reads /proc and /sys (CPU, battery, sensors) with XMLHttpRequest
+if ! grep -q '^GreeterEnvironment=.*QML_XHR_ALLOW_FILE_READ' "$conf"; then
+    if grep -q '^GreeterEnvironment=' "$conf"; then
+        sudo sed -i 's/^GreeterEnvironment=\(.*\)/GreeterEnvironment=\1,QML_XHR_ALLOW_FILE_READ=1/' "$conf"
+    elif grep -q '^\[General\]' "$conf"; then
+        sudo sed -i '/^\[General\]/a GreeterEnvironment=QML_XHR_ALLOW_FILE_READ=1' "$conf"
+    else
+        printf '\n[General]\nGreeterEnvironment=QML_XHR_ALLOW_FILE_READ=1\n' | sudo tee -a "$conf" >/dev/null
+    fi
+fi
 echo "Prism SDDM theme installed and active (backup of the old config: $backup)"
