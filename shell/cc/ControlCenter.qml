@@ -268,6 +268,7 @@ Scope {
                                 component FootButton: Rectangle {
                                     property string icon
                                     signal clicked()
+                                    signal rightClicked()
                                     width: 40
                                     height: 40
                                     radius: 20
@@ -280,11 +281,14 @@ Scope {
                                     }
                                     HoverHandler { id: fh; cursorShape: Qt.PointingHandCursor }
                                     TapHandler { onTapped: parent.clicked() }
+                                    TapHandler { acceptedButtons: Qt.RightButton; onTapped: parent.rightClicked() }
                                 }
 
+                                // Next wallpaper on this screen; right click: every screen
                                 FootButton {
                                     icon: Icons.wallpaper
-                                    onClicked: { Cc.open = false; scope.run(scope.userScripts + "/WallpaperSelect.sh"); }
+                                    onClicked: Wallpaper.next(Cc.screen ? Cc.screen.name : "")
+                                    onRightClicked: Wallpaper.next("")
                                 }
                                 FootButton {
                                     icon: Icons.lock

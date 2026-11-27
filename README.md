@@ -29,4 +29,6 @@ quickshell -p ~/.config/prism/shell
   - `osd/`: volume / mic / brightness OSD (`Osd.qml` listens to PipeWire and kernel backlight uevents)
   - `Privacy.qml` + `bar/PrivacyIndicator.qml`: mic / camera / screen-share indicator
   - `cc/`: control center (quick toggles, sliders, Wi-Fi / Bluetooth / Sound pages); `Hypr.qml` sets Hyprland options on 0.56 and 0.57; `Wallpaper.qml` feeds the accent color
+  - `Wallpaper.qml`: daily wallpaper per screen from `~/Pictures/wallpapers/prism/{landscape,portrait}` via swww; state in `~/.cache/prism/wallpaper.json` (`quickshell ipc -p ~/.config/prism/shell call wallpaper next [output]`, `rescan`, `state`)
+- `wallpaper/`: `gen_gradients.py` (Prism's own gradients), `crop_portrait.py` (portrait cuts of the landscape set, cached in `~/.cache/prism/wallpaper-portrait`)
   - `Icons.qml`: monochrome icon set

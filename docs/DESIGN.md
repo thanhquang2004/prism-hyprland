@@ -59,11 +59,16 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 ## 6. Wallpaper
 
-- **Chu kỳ:** tự đổi mỗi tuần.
-- **Mỗi màn một ảnh khác nhau:** 2 màn ngang dùng 2 ảnh khác nhau; màn dọc DP-1 lấy từ bộ ảnh dọc riêng.
+- **Chu kỳ:** tự đổi mỗi ngày (lúc qua ngày mới); nút wallpaper trong control center đổi ngay (chuột phải: mọi màn).
+- **Mỗi màn một ảnh khác nhau,** ưu tiên mỗi màn một phong cách, không lặp lại 40 ảnh gần nhất.
+- **Màn dọc DP-1:** bộ ảnh dọc riêng + ảnh ngang được cắt dọc tự động theo vùng nhiều chi tiết nhất.
 - **Phong cách:** abstract/gradient, illustration/anime, kiến trúc/đô thị.
 - **Màu hệ thống:** lấy từ wallpaper màn chính (eDP-1).
-- **Nguồn ảnh:** sẽ tìm bộ ảnh có giấy phép rõ ràng; xin phép trước khi tải.
+- **Bộ ảnh** (`~/Pictures/wallpapers/prism/`, nguồn ghi trong `SOURCES.md` ở đó):
+  - `prism-*`: gradient tự sinh (`wallpaper/gen_gradients.py`), 12 ngang + 12 dọc.
+  - `ghibli-*`: 31 still chính thức từ ghibli.jp (dùng cá nhân "trong phạm vi lẽ thường").
+  - `unsplash-*`: 22 ngang + 20 dọc kiến trúc/đô thị (Unsplash License).
+  - `wallhaven-*`: 21 ngang + 5 dọc anime đa dạng (wallhaven.cc, bản quyền không rõ: chỉ dùng cá nhân, không phát tán).
 
 ## 7. Giữ nguyên
 
@@ -76,6 +81,6 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 1. ✅ Repo `~/.config/prism` (git). Bar cho 3 màn trên 0.56, chạy song song waybar.
 2. ✅ OSD, chỉ báo họp, ẩn khi fullscreen, thông báo riêng (27/11).
 3. ✅ Control center (thả xuống từ cụm trạng thái) + màu nhấn từ wallpaper (27/11). Chưa có: vuốt touchpad (làm ở bước 0.57).
-4. Wallpaper: bộ ảnh, đổi hằng tuần theo từng màn.
+4. ✅ Wallpaper: bộ ảnh riêng, đổi mỗi ngày, mỗi màn một ảnh, màn dọc có ảnh cắt (27/11).
 5. hyprlock + hypridle.
 6. Lên 0.57: `hyprland.lua` hoàn chỉnh, wobble, tắt waybar/JaKooLit (giữ bản sao lưu).
