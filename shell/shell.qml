@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import "bar"
+import "cc"
 import "notifs"
 import "osd"
 import "power"
@@ -20,5 +21,6 @@ ShellRoot {
     NotifCenter {}
     NotifPopups {}
     OsdWindow {}
+    ControlCenter {}
     PowerMenu {}
 }

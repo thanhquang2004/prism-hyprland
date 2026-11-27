@@ -45,7 +45,8 @@ Row {
         icon: {
             if (!root.netDevice) return "󰤮";
             if (root.netDevice.type === DeviceType.Wifi) {
-                const s = root.wifi ? root.wifi.signalStrength : 0;
+                let s = root.wifi ? root.wifi.signalStrength : 0;
+                if (s > 1) s /= 100;          // reported as 0..100
                 return s > 0.75 ? "󰤨" : s > 0.5 ? "󰤥" : s > 0.25 ? "󰤢" : "󰤟";
             }
             return "󰈀";

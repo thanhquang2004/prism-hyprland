@@ -54,6 +54,27 @@ Singleton {
     readonly property string share: "\u{F0118}"
     readonly property string brightness: "\u{F00E0}"
 
+    // Control center
+    readonly property string wifi: "\u{F05A9}"
+    readonly property string wifiOff: "\u{F05AA}"
+    readonly property string wifiLock: "\u{F0341}"
+    readonly property string bluetooth: "\u{F00AF}"
+    readonly property string bluetoothOff: "\u{F00B2}"
+    readonly property string bluetoothOn: "\u{F00B1}"
+    readonly property string airplane: "\u{F001D}"
+    readonly property string nightLight: "\u{F059B}"
+    readonly property string darkMode: "\u{F050E}"
+    readonly property string gamepad: "\u{F0297}"
+    readonly property string blur: "\u{F00B5}"
+    readonly property string layout: "\u{F0574}"
+    readonly property string screenshot: "\u{F0E51}"
+    readonly property string wallpaper: "\u{F02E9}"
+    readonly property string speaker: "\u{F04C3}"
+    readonly property string headphones: "\u{F02CB}"
+    readonly property string check: "\u{F012C}"
+    readonly property string chevronRight: "\u{F0142}"
+    readonly property string chevronLeft: "\u{F0141}"
+
     // Theme
     readonly property string sun: "\u{F0599}"
     readonly property string moon: "\u{F0594}"

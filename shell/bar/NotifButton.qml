@@ -1,5 +1,6 @@
 import QtQuick
 import ".."
+import "../cc"
 
 // Bell with unread count. Left click opens the notification panel on this
 // screen, right click toggles do-not-disturb.
@@ -38,6 +39,13 @@ Rectangle {
     HoverHandler { id: hover; cursorShape: Qt.PointingHandCursor }
     TapHandler {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onTapped: (point, button) => button === Qt.RightButton ? (Notifs.dnd = !Notifs.dnd) : Notifs.togglePanel(root.screen)
+        onTapped: (point, button) => {
+            if (button === Qt.RightButton) {
+                Notifs.dnd = !Notifs.dnd;
+            } else {
+                Cc.open = false;
+                Notifs.togglePanel(root.screen);
+            }
+        }
     }
 }

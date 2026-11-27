@@ -4,6 +4,7 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 import ".."
 import "../power"
+import "../cc"
 
 // Floating glass bar for one screen. The layer surface spans the top
 // strip; only the bar itself takes input (mask) and gets blurred
@@ -75,9 +76,23 @@ PanelWindow {
                 window: win
                 visible: win.formFactor !== "portrait"
             }
-            Status {
+            // Status cluster opens the control center
+            Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
-                compact: win.formFactor === "portrait"
+                implicitWidth: status.implicitWidth + 16
+                implicitHeight: Theme.chipHeight
+                radius: height / 2
+                readonly property bool active: Cc.open && Cc.screen === win.screen
+                color: active ? Theme.chipActive : (statusHover.hovered ? Theme.chipHover : "transparent")
+                Behavior on color { ColorAnimation { duration: Theme.animFast } }
+
+                Status {
+                    id: status
+                    anchors.centerIn: parent
+                    compact: win.formFactor === "portrait"
+                }
+                HoverHandler { id: statusHover; cursorShape: Qt.PointingHandCursor }
+                TapHandler { onTapped: Cc.toggle(win.screen) }
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter

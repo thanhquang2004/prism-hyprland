@@ -61,7 +61,22 @@ Singleton {
     readonly property color text: dark ? "#ffffff" : "#17181c"
     readonly property color textDim: Qt.alpha(text, 0.72)
     readonly property color textFaint: Qt.alpha(text, 0.45)
-    readonly property color accent: text
+    // Accent: the most colorful tone of the wallpaper, re-lit to stay legible
+    // on the glass (light tint on Smoke, deeper tone on Milky).
+    ColorQuantizer {
+        id: wallColors
+        source: Wallpaper.primary ? "file://" + Wallpaper.primary : ""
+        depth: 3
+        rescaleSize: 96
+    }
+    readonly property color wallTone: {
+        const cs = wallColors.colors;
+        if (!cs || cs.length === 0) return "#7aa2f7";
+        return cs.reduce((a, b) => (b.hslSaturation * (1 - Math.abs(b.hslLightness - 0.5)) > a.hslSaturation * (1 - Math.abs(a.hslLightness - 0.5)) ? b : a));
+    }
+    readonly property color accent: Qt.hsla(wallTone.hslHue, Math.min(Math.max(wallTone.hslSaturation, 0.45), 0.75), dark ? 0.72 : 0.44, 1)
+    // Ink on top of an accent fill
+    readonly property color onAccent: dark ? "#111318" : "#ffffff"
     readonly property color warn: dark ? "#ffb4a2" : "#b3261e"
 
     // Type

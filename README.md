@@ -13,6 +13,8 @@ hyprctl keyword layerrule "match:namespace prism-notifs, blur on"
 hyprctl keyword layerrule "match:namespace prism-notifs, ignore_alpha 0.1"
 hyprctl keyword layerrule "match:namespace prism-osd, blur on"
 hyprctl keyword layerrule "match:namespace prism-osd, ignore_alpha 0.1"
+hyprctl keyword layerrule "match:namespace prism-cc, blur on"
+hyprctl keyword layerrule "match:namespace prism-cc, ignore_alpha 0.1"
 quickshell -p ~/.config/prism/shell
 ```
 
@@ -26,4 +28,5 @@ quickshell -p ~/.config/prism/shell
   - `power/`: fullscreen power menu (`quickshell ipc -p ~/.config/prism/shell call power toggle`)
   - `osd/`: volume / mic / brightness OSD (`Osd.qml` listens to PipeWire and kernel backlight uevents)
   - `Privacy.qml` + `bar/PrivacyIndicator.qml`: mic / camera / screen-share indicator
+  - `cc/`: control center (quick toggles, sliders, Wi-Fi / Bluetooth / Sound pages); `Hypr.qml` sets Hyprland options on 0.56 and 0.57; `Wallpaper.qml` feeds the accent color
   - `Icons.qml`: monochrome icon set

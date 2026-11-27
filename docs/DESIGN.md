@@ -7,7 +7,7 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 | Mục | Quyết định |
 |---|---|
 | Chất liệu | Kính mờ: tối = "Smoke" (kính khói, chữ trắng), sáng = "Milky" (kính sữa, chữ tối) |
-| Màu | Một màu mực duy nhất cho chữ và icon; màu nhấn từ wallpaper (wallust) để sau |
+| Màu | Một màu mực cho chữ và icon; màu nhấn lấy từ wallpaper màn chính (tile bật, slider, sóng nhạc) |
 | Sáng/tối | Đi theo night light (`~/.cache/.hyprsunset_state`): bật → Smoke, tắt → Milky |
 | Font | Inter; icon đơn sắc Material Design Icons (Nerd Font), tray được làm phẳng về cùng màu mực |
 | Power menu | Toàn màn hình trên màn đang focus, phím L/E/S/R/P, mũi tên + Enter; Đăng xuất / Khởi động lại / Tắt máy đếm ngược 5 giây, Esc để hủy |
@@ -75,7 +75,7 @@ Desktop riêng cho Hyprland 0.57 (Lua) + Quickshell. Máy: laptop ASUS (eDP-1 16
 
 1. ✅ Repo `~/.config/prism` (git). Bar cho 3 màn trên 0.56, chạy song song waybar.
 2. ✅ OSD, chỉ báo họp, ẩn khi fullscreen, thông báo riêng (27/11).
-3. Control center (thả xuống từ bar) + hệ màu wallust + sáng/tối theo night light.
+3. ✅ Control center (thả xuống từ cụm trạng thái) + màu nhấn từ wallpaper (27/11). Chưa có: vuốt touchpad (làm ở bước 0.57).
 4. Wallpaper: bộ ảnh, đổi hằng tuần theo từng màn.
 5. hyprlock + hypridle.
 6. Lên 0.57: `hyprland.lua` hoàn chỉnh, wobble, tắt waybar/JaKooLit (giữ bản sao lưu).
